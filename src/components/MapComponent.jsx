@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { useT } from '../i18n';
 import { renderToString } from 'react-dom/server';
-import { Castle, Shield, Landmark, Church, MapPin, Heart, Pickaxe, Map as MapIcon, Swords, Train, Building } from 'lucide-react';
+import { Castle, Shield, Landmark, Church, MapPin, Heart, Pickaxe, Map as MapIcon, Swords, Train, Building, GraduationCap, Milestone, Drama, Sparkles, Flag } from 'lucide-react';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -29,6 +29,11 @@ const TYPE_COLORS = {
   station:             '#0284C7',
   district:            '#16A34A',
   historical_landmark: '#6366F1',
+  university:          '#0D9488',
+  bridge:              '#64748B',
+  theater:             '#BE185D',
+  wonder:              '#EAB308',
+  event_site:          '#7C2D12',
 };
 
 const TYPE_ICONS = {
@@ -44,6 +49,11 @@ const TYPE_ICONS = {
   station: Train,
   district: Building,
   historical_landmark: Landmark,
+  university: GraduationCap,
+  bridge: Milestone,
+  theater: Drama,
+  wonder: Sparkles,
+  event_site: Flag,
 };
 
 export const TYPE_LABELS = {
@@ -59,6 +69,11 @@ export const TYPE_LABELS = {
   station:             'Estação',
   district:            'Bairro / Distrito',
   historical_landmark: 'Marco Histórico',
+  university:          'Universidade Histórica',
+  bridge:              'Ponte Histórica',
+  theater:             'Teatro / Ópera',
+  wonder:              'Maravilha do Mundo',
+  event_site:          'Local de Evento Histórico',
 };
 
 function createPin(type, index = 0) {
