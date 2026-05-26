@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { useT } from '../i18n';
 import { renderToString } from 'react-dom/server';
-import { Castle, Shield, Landmark, Church, MapPin, Heart, Pickaxe, Map as MapIcon, Swords, Train, Building, GraduationCap, Milestone, Drama, Sparkles, Flag } from 'lucide-react';
+import { Castle, Shield, Landmark, Church, MapPin, Heart, Pickaxe, Map as MapIcon, Swords, Train, Building, GraduationCap, Milestone, Drama, Crown, Flag } from 'lucide-react';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -32,7 +32,7 @@ const TYPE_COLORS = {
   university:          '#0D9488',
   bridge:              '#64748B',
   theater:             '#BE185D',
-  wonder:              '#EAB308',
+  wonder:              '#D97706',
   event_site:          '#7C2D12',
 };
 
@@ -52,7 +52,7 @@ const TYPE_ICONS = {
   university: GraduationCap,
   bridge: Milestone,
   theater: Drama,
-  wonder: Sparkles,
+  wonder: Crown,
   event_site: Flag,
 };
 
@@ -77,8 +77,36 @@ export const TYPE_LABELS = {
 };
 
 function createPin(type, index = 0) {
-  const color = TYPE_COLORS[type] || '#6366F1';
   const delay = Math.min(index * 0.04, 0.8);
+
+  if (type === 'wonder') {
+    const iconSvg = renderToString(<Crown size={20} color="white" strokeWidth={2.5} />);
+    const gradId = `wg${index}`;
+    return L.divIcon({
+      html: `
+        <div class="animate-pin-pop" style="animation-delay:${delay}s;position:relative;width:44px;height:60px;filter:drop-shadow(0 4px 16px rgba(234,179,8,0.8))">
+          <svg viewBox="0 0 44 60" xmlns="http://www.w3.org/2000/svg" width="44" height="60" style="position:absolute;inset:0;">
+            <defs>
+              <linearGradient id="${gradId}" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#FCD34D"/>
+                <stop offset="100%" stop-color="#B45309"/>
+              </linearGradient>
+            </defs>
+            <path d="M22 0C9.85 0 0 9.85 0 22c0 13.75 22 38 22 38S44 35.75 44 22C44 9.85 34.15 0 22 0z" fill="url(#${gradId})"/>
+          </svg>
+          <div style="position:absolute;top:13px;left:13px;width:18px;height:18px;display:flex;align-items:center;justify-content:center;">
+            ${iconSvg}
+          </div>
+        </div>
+      `,
+      iconSize: [44, 60],
+      iconAnchor: [22, 60],
+      popupAnchor: [0, -54],
+      className: 'custom-marker',
+    });
+  }
+
+  const color = TYPE_COLORS[type] || '#6366F1';
   const IconCmp = TYPE_ICONS[type] || MapPin;
   const iconSvg = renderToString(<IconCmp size={16} color="white" strokeWidth={2.5} />);
 

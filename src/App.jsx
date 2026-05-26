@@ -29,14 +29,14 @@ function App() {
   const fetchNearby = useCallback(async (lat, lon) => {
     setLoadingNearby(true);
     try {
-      const res = await axios.get(`${API_BASE}/history/nearby`, { params: { lat, lon } });
+      const res = await axios.get(`${API_BASE}/history/nearby`, { params: { lat, lon, lang } });
       setPins(res.data);
     } catch (err) {
       console.error('Error fetching nearby', err);
     } finally {
       setLoadingNearby(false);
     }
-  }, []);
+  }, [lang]);
 
   const handleMapMove = useCallback((center) => {
     viewCenterRef.current = center;
@@ -129,14 +129,16 @@ function App() {
             </motion.button>
           </motion.div>
 
-          <AnimatePresence>
+          <AnimatePresence mode="popLayout">
             {isSettingsOpen && (
               <motion.div
+                layout
                 className="app-header-settings-content"
-                initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                animate={{ opacity: 1, height: 'auto', marginTop: 16 }}
-                exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                transition={{ duration: 0.2 }}
+                initial={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                style={{ marginTop: 16, transformOrigin: "top center" }}
               >
                 <div>
                   <span className="settings-section-title-light">{t.settingsGeneral}</span>
