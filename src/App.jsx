@@ -1,42 +1,90 @@
-import { useState, useEffect } from 'react';
+import { useState, useCallback, useRef } from 'react';
+import { Navigation, Compass, Settings, Globe, Bot, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import MapComponent from './components/MapComponent';
+import SearchBar from './components/SearchBar';
 import StoryPanel from './components/StoryPanel';
+import logoNoBackground from './assets/our_history_logo_nobackgrnd.png';
 import axios from 'axios';
-import { History, Search, Navigation } from 'lucide-react';
+import { useT } from './i18n';
 
-const API_BASE = 'http://localhost:3000';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://my-history-backend.vercel.app';
 
 function App() {
   const [pins, setPins] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [story, setStory] = useState(null);
   const [loadingStory, setLoadingStory] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState(null);
+  const [loadingNearby, setLoadingNearby] = useState(false);
+  const [mapCenter, setMapCenter] = useState(null);
+  const [userPosition, setUserPosition] = useState(null);
+  const [locating, setLocating] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [lang, setLang] = useState('pt-BR');
+  const [aiGuide, setAiGuide] = useState('historian');
 
-  const fetchNearby = async (lat, lon) => {
+  const t = useT(lang);
+  const viewCenterRef = useRef(null);
+
+  const fetchNearby = useCallback(async (lat, lon) => {
+    setLoadingNearby(true);
     try {
-      const res = await axios.get(`${API_BASE}/history/nearby`, {
-        params: { lat, lon }
-      });
+      const res = await axios.get(`${API_BASE}/history/nearby`, { params: { lat, lon, lang } });
       setPins(res.data);
     } catch (err) {
-      console.error('Error fetching nearby sites', err);
+      console.error('Error fetching nearby', err);
+    } finally {
+      setLoadingNearby(false);
     }
+  }, [lang]);
+
+  const handleMapMove = useCallback((center) => {
+    viewCenterRef.current = center;
+  }, []);
+
+  // Only called by button tap — required by iOS Safari for geolocation permission
+  const handleGoToUserLocation = () => {
+    if (!navigator.geolocation) return;
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude: lat, longitude: lng } = position.coords;
+        const center = { lat, lng };
+        setUserPosition(center);
+        setMapCenter(center);
+        viewCenterRef.current = center;
+        fetchNearby(lat, lng);
+        setLocating(false);
+      },
+      (err) => {
+        console.warn('Geolocation error:', err.message);
+        setLocating(false);
+      },
+      { enableHighAccuracy: true, timeout: 15000 }
+    );
   };
 
-  const handlePinClick = async (pin) => {
+  const handleScan = () => {
+    const center = viewCenterRef.current || mapCenter;
+    if (center) fetchNearby(center.lat, center.lng);
+  };
+
+  const handleSearchSelect = useCallback(({ lat, lng }) => {
+    const center = { lat, lng };
+    setMapCenter(center);
+    viewCenterRef.current = center;
+    fetchNearby(lat, lng);
+  }, [fetchNearby]);
+
+  const fetchStory = async (pin) => {
     setSelectedPlace(pin);
     setLoadingStory(true);
     setStory(null);
     try {
       const res = await axios.get(`${API_BASE}/history/story`, {
-        params: { 
-          name: pin.name,
-          lat: pin.lat,
-          lon: pin.lon
-        }
+        params: { name: pin.name, lat: pin.lat, lon: pin.lon, lang, aiGuide }
       });
-      setStory(res.data.story);
+      setStory({ text: res.data.story, photo: res.data.photoUrl, wikiUrl: res.data.wikiUrl });
     } catch (err) {
       console.error('Error fetching story', err);
     } finally {
@@ -44,55 +92,157 @@ function App() {
     }
   };
 
-  const handleLocationChange = (coords) => {
-    setCurrentLocation(coords);
-    fetchNearby(coords.lat, coords.lng || coords.lon);
+  const handlePinClick = (pin) => {
+    if (selectedPlace) { setSelectedPlace(null); setStory(null); }
   };
 
+  const statusLabel = loadingNearby
+    ? t.loadingNearby
+    : pins.length === 0
+      ? t.noPlaces
+      : t.placesFound(pins.length);
+
   return (
-    <div className="relative w-full h-full">
-      {/* Header Overlay */}
-      <div className="absolute top-6 left-6 z-[1001] flex items-center gap-4">
-        <div className="glass px-6 py-4 flex items-center gap-3">
-          <History className="text-indigo-400" size={28} />
-          <div>
-            <h1 className="text-xl font-bold tracking-tight">Chronos Path</h1>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 font-semibold">Onde o passado ganha voz</p>
-          </div>
-        </div>
+    <div className="app-root">
+      <div className="app-header">
+        <motion.div
+          layout
+          className={`app-header-pill ${isSettingsOpen ? 'is-expanded' : ''}`}
+          style={{ borderRadius: isSettingsOpen ? 24 : 999 }}
+          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        >
+          <motion.div layout className="app-header-row">
+            <motion.img layout src={logoNoBackground} alt="Our History" className="app-logo" />
+            <motion.div layout className="app-header-text">
+              <span className="app-title">Our History</span>
+              <span className="app-subtitle">{statusLabel}</span>
+            </motion.div>
+            {loadingNearby && !isSettingsOpen && <motion.div layout className="app-header-spinner" />}
+
+            <motion.button
+              layout
+              className="app-header-settings-btn"
+              onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+              aria-label={isSettingsOpen ? 'Fechar' : 'Configurações'}
+            >
+              {isSettingsOpen ? <X size={18} /> : <Settings size={18} />}
+            </motion.button>
+          </motion.div>
+
+          <AnimatePresence mode="popLayout">
+            {isSettingsOpen && (
+              <motion.div
+                layout
+                className="app-header-settings-content"
+                initial={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                style={{ marginTop: 16, transformOrigin: "top center" }}
+              >
+                <div>
+                  <span className="settings-section-title-light">{t.settingsGeneral}</span>
+                  <div className="settings-option-light">
+                    <div className="settings-option-label-light">
+                      <Globe size={18} className="settings-option-icon-light" />
+                      {t.settingsLanguage}
+                    </div>
+                    <select
+                      className="settings-select-light"
+                      value={lang}
+                      onChange={(e) => setLang(e.target.value)}
+                    >
+                      <option value="pt-BR">Português</option>
+                      <option value="en-US">English</option>
+                      <option value="es-ES">Español</option>
+                      <option value="fr-FR">Français</option>
+                      <option value="de-DE">Deutsch</option>
+                      <option value="zh-CN">中文</option>
+                      <option value="ja-JP">日本語</option>
+                      <option value="ru-RU">Русский</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <span className="settings-section-title-light">{t.settingsAI}</span>
+                  <div className="settings-option-light">
+                    <div className="settings-option-label-light">
+                      <Bot size={18} className="settings-option-icon-light" />
+                      {t.settingsGuide}
+                    </div>
+                    <select
+                      className="settings-select-light"
+                      value={aiGuide}
+                      onChange={(e) => setAiGuide(e.target.value)}
+                    >
+                      <option value="historian">{t.guideHistorian}</option>
+                      <option value="professor">{t.guideProfessor}</option>
+                      <option value="child">{t.guideChild}</option>
+                    </select>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </div>
 
-      {/* Map Background */}
-      <MapComponent 
-        pins={pins} 
-        onPinClick={handlePinClick} 
-        onLocationChange={handleLocationChange}
+      <MapComponent
+        externalCenter={mapCenter}
+        pins={pins}
+        onPinClick={handlePinClick}
+        userPosition={userPosition}
+        onOpenStory={(pin) => fetchStory(pin)}
+        onMapMove={handleMapMove}
+        selectedPlace={selectedPlace}
+        lang={lang}
       />
 
-      {/* UI Elements Overlay */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[1001] flex gap-4">
-        <button className="glass p-4 hover:bg-indigo-500/20 transition-all group">
-          <Search size={24} className="group-hover:scale-110 transition-transform" />
-        </button>
-        <div className="glass px-6 py-4 flex items-center gap-3">
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          <span className="text-sm font-medium">Buscando segredos ao seu redor...</span>
+      <SearchBar onLocationSelect={handleSearchSelect} lang={lang} />
+
+      <div className="floating-dock-container">
+        <div className="floating-dock">
+          <button
+            onClick={handleGoToUserLocation}
+            className={`dock-btn-locate ${locating ? 'dock-btn-locating' : ''}`}
+            aria-label={t.locate}
+          >
+            <Navigation size={20} className={locating ? 'animate-spin' : ''} />
+          </button>
+
+          <button onClick={handleScan} className="dock-btn-scan">
+            <Compass size={20} className={loadingNearby ? 'animate-spin' : ''} />
+            <span>{t.scan}</span>
+          </button>
         </div>
-        <button className="glass p-4 hover:bg-indigo-500/20 transition-all group">
-          <Navigation size={24} className="group-hover:scale-110 transition-transform" />
-        </button>
       </div>
 
-      {/* Story Panel */}
-      <StoryPanel 
+      <StoryPanel
         selectedPlace={selectedPlace}
         story={story}
         loading={loadingStory}
-        onClose={() => setSelectedPlace(null)}
+        onClose={() => { setSelectedPlace(null); setStory(null); }}
+        lang={lang}
       />
 
-      {/* Dark Vignette Overlay */}
-      <div className="pointer-events-none absolute inset-0 z-[999] shadow-[inset_0_0_150px_rgba(0,0,0,0.5)]" />
+      <AnimatePresence>
+        {loadingNearby && (
+          <motion.div
+            className="radar-wave-container"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <div className="radar-wave" />
+            <div className="radar-wave" style={{ animationDelay: '1s' }} />
+            <div className="radar-wave" style={{ animationDelay: '2s' }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="app-vignette" />
     </div>
   );
 }
