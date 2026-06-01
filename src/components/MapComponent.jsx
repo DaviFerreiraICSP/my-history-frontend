@@ -1,8 +1,8 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
+import { memo, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap, useMapEvents } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { useT } from '../i18n';
@@ -16,7 +16,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-const TYPE_COLORS = {
+export const TYPE_COLORS = {
   castle:              '#7C3AED',
   fort:                '#7C3AED',
   museum:              '#2563EB',
@@ -76,16 +76,31 @@ export const TYPE_LABELS = {
   event_site:          'Local de Evento Histórico',
 };
 
+const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 640;
+
+// Cache icons so renderToString runs once per type (mobile) or once per type+delay bucket (desktop)
+const _pinCache = new Map();
+
 function createPin(type, index = 0) {
-  const delay = Math.min(index * 0.04, 0.8);
+  // On mobile there's no animation so all same-type pins are identical → cache by type only.
+  // On desktop the animation-delay caps at 0.8s (index 20) → 21 buckets per type max.
+  const bucket = isMobileDevice ? 0 : Math.min(index, 20);
+  const cacheKey = `${type}_${bucket}`;
+  if (_pinCache.has(cacheKey)) return _pinCache.get(cacheKey);
+
+  const animAttr = isMobileDevice
+    ? 'style="position:relative;'
+    : `class="animate-pin-pop" style="animation-delay:${Math.min(index * 0.04, 0.8)}s;position:relative;`;
+
+  let icon;
 
   if (type === 'wonder') {
     const iconSvg = renderToString(<Crown size={20} color="white" strokeWidth={2.5} />);
-    const gradId = `wg${index}`;
-    return L.divIcon({
+    const gradId = `wg_${bucket}`;
+    icon = L.divIcon({
       html: `
-        <div class="animate-pin-pop" style="animation-delay:${delay}s;position:relative;width:44px;height:60px;filter:drop-shadow(0 4px 16px rgba(234,179,8,0.8))">
-          <svg viewBox="0 0 44 60" xmlns="http://www.w3.org/2000/svg" width="44" height="60" style="position:absolute;inset:0;">
+        <div ${animAttr}width:44px;height:60px;filter:drop-shadow(0 4px 16px rgba(234,179,8,0.8))">
+          <svg viewBox="0 0 44 60" xmlns="http://www.w3.org/2000/svg" width="44" height="60" style="position:absolute;top:0;left:0;right:0;bottom:0;">
             <defs>
               <linearGradient id="${gradId}" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#FCD34D"/>
@@ -104,28 +119,30 @@ function createPin(type, index = 0) {
       popupAnchor: [0, -54],
       className: 'custom-marker',
     });
+  } else {
+    const color = TYPE_COLORS[type] || '#6366F1';
+    const IconCmp = TYPE_ICONS[type] || MapPin;
+    const iconSvg = renderToString(<IconCmp size={16} color="white" strokeWidth={2.5} />);
+    icon = L.divIcon({
+      html: `
+        <div ${animAttr}width:32px;height:44px;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.35))">
+          <svg viewBox="0 0 32 44" xmlns="http://www.w3.org/2000/svg" width="32" height="44" style="position:absolute;top:0;left:0;right:0;bottom:0;">
+            <path d="M16 0C7.163 0 0 7.163 0 16c0 10 16 28 16 28S32 26 32 16C32 7.163 24.837 0 16 0z" fill="${color}" />
+          </svg>
+          <div style="position:absolute;top:8px;left:8px;width:16px;height:16px;display:flex;align-items:center;justify-content:center;">
+            ${iconSvg}
+          </div>
+        </div>
+      `,
+      iconSize: [32, 44],
+      iconAnchor: [16, 44],
+      popupAnchor: [0, -38],
+      className: 'custom-marker',
+    });
   }
 
-  const color = TYPE_COLORS[type] || '#6366F1';
-  const IconCmp = TYPE_ICONS[type] || MapPin;
-  const iconSvg = renderToString(<IconCmp size={16} color="white" strokeWidth={2.5} />);
-
-  return L.divIcon({
-    html: `
-      <div class="animate-pin-pop" style="animation-delay: ${delay}s; position:relative;width:32px;height:44px;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.35))">
-        <svg viewBox="0 0 32 44" xmlns="http://www.w3.org/2000/svg" width="32" height="44" style="position:absolute;inset:0;">
-          <path d="M16 0C7.163 0 0 7.163 0 16c0 10 16 28 16 28S32 26 32 16C32 7.163 24.837 0 16 0z" fill="${color}" />
-        </svg>
-        <div style="position:absolute; top: 8px; left: 8px; width: 16px; height: 16px; display:flex; align-items:center; justify-content:center;">
-          ${iconSvg}
-        </div>
-      </div>
-    `,
-    iconSize: [32, 44],
-    iconAnchor: [16, 44],
-    popupAnchor: [0, -38],
-    className: 'custom-marker',
-  });
+  _pinCache.set(cacheKey, icon);
+  return icon;
 }
 
 const userPin = L.divIcon({
@@ -153,6 +170,7 @@ const userPin = L.divIcon({
   iconAnchor: [26, 26],
   className: 'custom-marker',
 });
+
 
 
 function FlyToLocation({ center }) {
@@ -183,7 +201,7 @@ const createClusterCustomIcon = function (cluster) {
   });
 };
 
-export default function MapComponent({ pins, onPinClick, userPosition, externalCenter, onOpenStory, onMapMove, selectedPlace, lang = 'pt-BR' }) {
+function MapComponent({ pins, onPinClick, userPosition, externalCenter, onOpenStory, onMapMove, selectedPlace, lang = 'pt-BR', scanCenter, darkMode = false, theme = 'light', loadingNearby = false }) {
   const t = useT(lang);
   return (
     <div className="absolute inset-0 z-0">
@@ -194,7 +212,12 @@ export default function MapComponent({ pins, onPinClick, userPosition, externalC
         className="w-full h-full"
       >
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+          key={theme}
+          url={
+            theme === 'midnight' ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+            : theme === 'dark'   ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+            :                      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+          }
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
           maxZoom={19}
         />
@@ -203,12 +226,14 @@ export default function MapComponent({ pins, onPinClick, userPosition, externalC
         <FlyToLocation center={externalCenter} />
         {onMapMove && <MapCenterTracker onMapMove={onMapMove} />}
 
-        <MarkerClusterGroup 
-          chunkedLoading 
-          spiderfyOnMaxZoom 
+        <MarkerClusterGroup
+          chunkedLoading
+          spiderfyOnMaxZoom
           showCoverageOnHover={false}
           iconCreateFunction={createClusterCustomIcon}
-          maxClusterRadius={40}
+          maxClusterRadius={isMobileDevice ? 60 : 40}
+          animate={!isMobileDevice}
+          animateAddingMarkers={false}
         >
           {pins.map((pin, index) => (
             <Marker
@@ -219,25 +244,41 @@ export default function MapComponent({ pins, onPinClick, userPosition, externalC
             >
               <Popup className="transparent-popup" closeButton={false}>
                 {selectedPlace?.id !== pin.id && (
-                  <motion.div
-                    layoutId={`story-card-${pin.id}`}
-                    initial={{ scale: 0.3, opacity: 0, y: 10 }}
-                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                    transition={{ type: 'spring', damping: 25, stiffness: 200, mass: 1 }}
-                    className="marker-preview-card"
-                  >
-                    <div className="marker-preview-type">
-                      {t.typeLabels[pin.type] || t.typeLabels.historical_landmark}
+                  isMobileDevice ? (
+                    <div className="marker-preview-card">
+                      <div className="marker-preview-type">
+                        {t.typeLabels[pin.type] || t.typeLabels.historical_landmark}
+                      </div>
+                      <h3 className="marker-preview-name">{pin.name}</h3>
+                      <button className="marker-preview-open" onClick={(e) => {
+                        e.stopPropagation();
+                        if (onOpenStory) onOpenStory(pin);
+                      }}>
+                        {t.viewStory}
+                        <ChevronRight size={15} />
+                      </button>
                     </div>
-                    <h3 className="marker-preview-name">{pin.name}</h3>
-                    <button className="marker-preview-open" onClick={(e) => {
-                      e.stopPropagation();
-                      if(onOpenStory) onOpenStory(pin);
-                    }}>
-                      {t.viewStory}
-                      <ChevronRight size={15} />
-                    </button>
-                  </motion.div>
+                  ) : (
+                    <motion.div
+                      layoutId={`story-card-${pin.id}`}
+                      initial={{ scale: 0.3, opacity: 0, y: 10 }}
+                      animate={{ scale: 1, opacity: 1, y: 0 }}
+                      transition={{ type: 'spring', damping: 25, stiffness: 200, mass: 1 }}
+                      className="marker-preview-card"
+                    >
+                      <div className="marker-preview-type">
+                        {t.typeLabels[pin.type] || t.typeLabels.historical_landmark}
+                      </div>
+                      <h3 className="marker-preview-name">{pin.name}</h3>
+                      <button className="marker-preview-open" onClick={(e) => {
+                        e.stopPropagation();
+                        if (onOpenStory) onOpenStory(pin);
+                      }}>
+                        {t.viewStory}
+                        <ChevronRight size={15} />
+                      </button>
+                    </motion.div>
+                  )
                 )}
               </Popup>
             </Marker>
@@ -247,3 +288,5 @@ export default function MapComponent({ pins, onPinClick, userPosition, externalC
     </div>
   );
 }
+
+export default memo(MapComponent);

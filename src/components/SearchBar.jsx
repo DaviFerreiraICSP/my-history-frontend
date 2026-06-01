@@ -107,6 +107,9 @@ export default function SearchBar({ onLocationSelect, lang = 'pt-BR' }) {
                 : <Search size={15} />
               }
             </button>
+            <button className="search-close-internal" onClick={handleClose} aria-label="Fechar busca">
+              <X size={15} />
+            </button>
 
             <AnimatePresence>
               {(suggestions.length > 0 || notFound) && (

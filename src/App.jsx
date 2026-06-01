@@ -1,19 +1,105 @@
 import { useState, useCallback, useRef } from 'react';
-import { Navigation, Compass, Settings, Globe, Bot, X } from 'lucide-react';
+import { Navigation, Compass, Settings, Globe, Bot, X, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import MapComponent from './components/MapComponent';
+import logoBlack from './assets/logo-black.png';
+import logoWhite from './assets/logo-white.png';
+import MapComponent, { TYPE_COLORS } from './components/MapComponent';
 import SearchBar from './components/SearchBar';
+import OnboardingOverlay from './components/OnboardingOverlay';
+import AboutModal from './components/AboutModal';
 import StoryPanel from './components/StoryPanel';
-import logoNoBackground from './assets/our_history_logo_nobackgrnd.png';
 import axios from 'axios';
 import { useT } from './i18n';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'https://my-history-backend.vercel.app';
 
+const SEVEN_WONDERS = [
+  { id: 'wonder_colosseum',       name: 'Coliseu',                 lat:  41.8902, lon:  12.4922, type: 'wonder' },
+  { id: 'wonder_great_wall',      name: 'Grande Muralha da China', lat:  40.4319, lon: 116.5704, type: 'wonder' },
+  { id: 'wonder_christ_redeemer', name: 'Cristo Redentor',         lat: -22.9519, lon: -43.2105, type: 'wonder' },
+  { id: 'wonder_machu_picchu',    name: 'Machu Picchu',            lat: -13.1631, lon: -72.5450, type: 'wonder' },
+  { id: 'wonder_chichen_itza',    name: 'Chichen Itzá',            lat:  20.6843, lon: -88.5678, type: 'wonder' },
+  { id: 'wonder_taj_mahal',       name: 'Taj Mahal',               lat:  27.1751, lon:  78.0421, type: 'wonder' },
+  { id: 'wonder_petra',           name: 'Petra',                   lat:  30.3285, lon:  35.4444, type: 'wonder' },
+  { id: 'wonder_pyramid_giza',    name: 'Pirâmides de Gizé',       lat:  29.9792, lon:  31.1342, type: 'wonder' },
+];
+
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function toWikiLang(appLang) {
+  const map = { 'pt-BR':'pt','es-ES':'es','fr-FR':'fr','de-DE':'de','zh-CN':'zh','ja-JP':'ja','ru-RU':'ru' };
+  return map[appLang] || 'en';
+}
+
+function cleanWikiTitle(title) {
+  return title.replace(/\s*\([^)]+\)\s*$/, '').trim();
+}
+
+function inferTypeFromTitle(title) {
+  const t = title.toLowerCase();
+
+  // Religious
+  if (/catedral|basílica|basilica|igreja|chapel|church|mosteiro|monastery|convento|convent|abadia|abbey|santuário|santuario|ermida|oratório|oratorio|paróquia|paroquia|capelinha|\bsé\b|\bmatriz\b|templo (histórico|de)|cripta/.test(t)) return 'church';
+
+  // Museums & cultural spaces
+  if (/museu|museum|pinacoteca|galeria de arte|gallery|centro cultural|cultural cent|casa de cultura|arquivo (histórico|público|municipal|estadual|nacional)|biblioteca (nacional|estadual|municipal)|observatório|observatorio/.test(t)) return 'museum';
+
+  // Castles, forts & fortifications
+  if (/castelo|castle|forte\b|fort\b|fortaleza|fortress|cidadela|citadel|muralha|torre de defesa|bastião|bastiao|baluarte|fortim|reduto/.test(t)) return 'castle';
+
+  // Memorials & cemeteries
+  if (/memorial|cemitério|cemiterio|cemetery|túmulo|tumulo|mausoléu|mausoleu|mausoleum|necrópole|necropolis|cenotáfio/.test(t)) return 'memorial';
+
+  // Ruins & archaeological sites
+  if (/ruína|ruinas|ruins|sítio arqueológico|sitio arqueologico|archaeological|arqueológico|arqueologico|vestígios|sítio histórico|sitio historico|sambaqui|rupestre/.test(t)) return 'ruins';
+
+  // Battlefields & war events
+  if (/campo de batalha|battlefield|batalha de |battle of |combate de |revolta de |revolução (de|do|da)|insurreição|guerra (civil|do|da|de)/.test(t)) return 'battlefield';
+
+  // Stations, ports & transport infrastructure
+  if (/\bestação\b|station|terminal (ferroviário|rodoviário|de passageiros)|metrô|metro\b|ferrovia|ferroviária|aeroporto|airport|\bporto de\b|\bcais\b|hidrovia/.test(t)) return 'station';
+
+  // Universities & education
+  if (/universidade|university|faculdade|faculty|\bcollege\b|liceu|academia de|instituto federal|escola politécnica|escola de (belas|artes|medicina|direito)|colégio estadual/.test(t)) return 'university';
+
+  // Bridges & viaducts
+  if (/\bponte\b|\bbridge\b|viaduto|viaduct|aqueduto|aqueduct|túnel histórico|tunel historico/.test(t)) return 'bridge';
+
+  // Theaters & performance venues
+  if (/teatro|theatre|theater|ópera|opera house|anfiteatro|amphith|sala de concertos|concert hall|cineteatro|casa de espetáculos/.test(t)) return 'theater';
+
+  // Historic events & proclamations
+  if (/proclamação|proclamation|tratado de |declaração de independência|declaration of independence|abolição|abolition|assinatura do/.test(t)) return 'event_site';
+
+  // Palaces, government & civic buildings
+  if (/palácio|palacio|palace|paço\b|pacos\b|prefeitura|câmara municipal|câmara dos|senado federal|tribunal de|governo do estado|governo de|sede do governo|ministério|ministerio|parliament|parlamento|intendência|intendencia|arsenal (de|da|do)/.test(t)) return 'monument';
+
+  // Districts, neighborhoods & historic centers
+  if (/\bbairro\b|\bdistrict\b|\bdistrito\b|vila histórica|vila operária|vila |vila$|centro histórico|centro historico|núcleo histórico|núcleo colonial|conjunto histórico|pelourinho/.test(t)) return 'district';
+
+  // Plazas, gardens, monuments, statues
+  if (/praça|square|plaza|\blargo\b|jardim (histórico|botânico|público)|parque histórico|parque nacional|parque estadual|monumento|monument|estátua|statue|obelisco|marco histórico|\bfonte\b (histórica|de)|coreto|chafariz|arco do|coluna de/.test(t)) return 'monument';
+
+  // Noble houses, estates & historic buildings
+  if (/solar (de|do|da)|engenho (de|do|da)|fazenda (histórica|velha|do|da)|sítio (do|da|de)\b|chácara|\bcasa grande\b|sobrado histórico|palacete/.test(t)) return 'historical_landmark';
+
+  // Civic/cultural landmarks by keyword
+  if (/mercado (municipal|histórico|público)|feira histórica|edifício (histórico|sede|central)|torre (histórica|do relógio)|relógio público|fórum|forum\b|hospedaria|alojamento histórico/.test(t)) return 'monument';
+
+  return 'historical_landmark';
+}
+
 function App() {
   const [pins, setPins] = useState([]);
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [story, setStory] = useState(null);
+  const [storyError, setStoryError] = useState(false);
   const [loadingStory, setLoadingStory] = useState(false);
   const [loadingNearby, setLoadingNearby] = useState(false);
   const [mapCenter, setMapCenter] = useState(null);
@@ -22,15 +108,84 @@ function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [lang, setLang] = useState('pt-BR');
   const [aiGuide, setAiGuide] = useState('historian');
+  const [hiddenTypes, setHiddenTypes] = useState(new Set());
+  const [scanCenter, setScanCenter] = useState(null);
+  const [theme, setTheme] = useState(() => {
+    try { return localStorage.getItem('oh-theme') || 'light'; } catch { return 'light'; }
+  });
+  const darkMode = theme === 'dark' || theme === 'midnight';
+
+  const [showAbout, setShowAbout] = useState(false);
+
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    try { return !localStorage.getItem('oh-onboarded'); } catch { return true; }
+  });
+  const handleOnboardingDone = useCallback(() => {
+    try { localStorage.setItem('oh-onboarded', '1'); } catch {}
+    setShowOnboarding(false);
+  }, []);
+
+  // Evaluated once at mount — good enough, the app is not resized mid-session
+  const [isMobile] = useState(() => window.innerWidth < 640);
 
   const t = useT(lang);
   const viewCenterRef = useRef(null);
 
+  const toggleType = useCallback((type) => {
+    setHiddenTypes(prev => {
+      const next = new Set(prev);
+      next.has(type) ? next.delete(type) : next.add(type);
+      return next;
+    });
+  }, []);
+
+  const clearFilters = useCallback(() => setHiddenTypes(new Set()), []);
+
+  const selectTheme = useCallback((t) => {
+    setTheme(t);
+    try { localStorage.setItem('oh-theme', t); } catch {}
+  }, []);
+
   const fetchNearby = useCallback(async (lat, lon) => {
+    setScanCenter({ lat, lng: lon });
     setLoadingNearby(true);
     try {
-      const res = await axios.get(`${API_BASE}/history/nearby`, { params: { lat, lon, lang } });
-      setPins(res.data);
+      const localLang = toWikiLang(lang);
+      const langList = localLang === 'en' ? ['en'] : ['en', localLang];
+
+      const wikiSearch = async (wikiLang) => {
+        const res = await axios.get(`https://${wikiLang}.wikipedia.org/w/api.php`, {
+          params: { action: 'query', list: 'geosearch', gscoord: `${lat}|${lon}`, gsradius: 10000, gslimit: 50, format: 'json', origin: '*' },
+        });
+        return res.data?.query?.geosearch || [];
+      };
+
+      const results = await Promise.all(langList.map(l => wikiSearch(l).catch(() => [])));
+      const [enPlaces, ...rest] = results;
+      const localPlaces = rest[0] ?? [];
+
+      const seen = new Set();
+      const unique = [...localPlaces, ...enPlaces].filter(p => {
+        if (seen.has(p.pageid)) return false;
+        seen.add(p.pageid);
+        return true;
+      });
+
+      const wikiPlaces = unique.map(p => ({
+        id: String(p.pageid),
+        name: cleanWikiTitle(p.title),
+        lat: p.lat,
+        lon: p.lon,
+        type: inferTypeFromTitle(p.title),
+      }));
+
+      const nearbyWonders = SEVEN_WONDERS.filter(w => haversineKm(lat, lon, w.lat, w.lon) <= 50);
+      const wikiFiltered = wikiPlaces.filter(
+        p => !nearbyWonders.some(w => haversineKm(p.lat, p.lon, w.lat, w.lon) < 0.5)
+      );
+
+      const combined = [...nearbyWonders, ...wikiFiltered];
+      setPins(isMobile ? combined.slice(0, 30) : combined);
     } catch (err) {
       console.error('Error fetching nearby', err);
     } finally {
@@ -76,10 +231,11 @@ function App() {
     fetchNearby(lat, lng);
   }, [fetchNearby]);
 
-  const fetchStory = async (pin) => {
+  const fetchStory = useCallback(async (pin) => {
     setSelectedPlace(pin);
     setLoadingStory(true);
     setStory(null);
+    setStoryError(false);
     try {
       const res = await axios.get(`${API_BASE}/history/story`, {
         params: { name: pin.name, lat: pin.lat, lon: pin.lon, lang, aiGuide }
@@ -87,32 +243,144 @@ function App() {
       setStory({ text: res.data.story, photo: res.data.photoUrl, wikiUrl: res.data.wikiUrl });
     } catch (err) {
       console.error('Error fetching story', err);
+      setStoryError(true);
     } finally {
       setLoadingStory(false);
     }
-  };
+  }, [lang, aiGuide]);
 
-  const handlePinClick = (pin) => {
+  const handlePinClick = useCallback((pin) => {
     if (selectedPlace) { setSelectedPlace(null); setStory(null); }
-  };
+  }, [selectedPlace]);
+
+  const filteredPins = hiddenTypes.size === 0 ? pins : pins.filter(p => !hiddenTypes.has(p.type));
 
   const statusLabel = loadingNearby
     ? t.loadingNearby
     : pins.length === 0
       ? t.noPlaces
-      : t.placesFound(pins.length);
+      : t.placesFound(filteredPins.length);
+
+  // Shared settings content used in both desktop pill and mobile drawer
+  const settingsContent = (
+    <>
+      <div>
+        <span className="settings-section-title-light">{t.settingsGeneral}</span>
+        <div className="settings-option-light">
+          <div className="settings-option-label-light">
+            <Globe size={18} className="settings-option-icon-light" />
+            {t.settingsLanguage}
+          </div>
+          <select
+            className="settings-select-light"
+            value={lang}
+            onChange={(e) => setLang(e.target.value)}
+          >
+            <option value="pt-BR">Português</option>
+            <option value="en-US">English</option>
+            <option value="es-ES">Español</option>
+            <option value="fr-FR">Français</option>
+            <option value="de-DE">Deutsch</option>
+            <option value="zh-CN">中文</option>
+            <option value="ja-JP">日本語</option>
+            <option value="ru-RU">Русский</option>
+          </select>
+        </div>
+        <div className="settings-option-light" style={{ marginTop: '0.75rem' }}>
+          <div className="settings-option-label-light">
+            <Moon size={18} className="settings-option-icon-light" />
+            {t.settingsDarkMode}
+          </div>
+          <select
+            className="settings-select-light"
+            value={theme}
+            onChange={(e) => selectTheme(e.target.value)}
+          >
+            <option value="light">{t.themeLight}</option>
+            <option value="dark">{t.themeDark}</option>
+            <option value="midnight">{t.themeMidnight}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <span className="settings-section-title-light">{t.settingsAI}</span>
+        <div className="settings-option-light">
+          <div className="settings-option-label-light">
+            <Bot size={18} className="settings-option-icon-light" />
+            {t.settingsGuide}
+          </div>
+          <select
+            className="settings-select-light"
+            value={aiGuide}
+            onChange={(e) => setAiGuide(e.target.value)}
+          >
+            <option value="historian">{t.guideHistorian}</option>
+            <option value="professor">{t.guideProfessor}</option>
+            <option value="child">{t.guideChild}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <span className="settings-section-title-light">{t.settingsFilters}</span>
+        <div className="settings-type-chips" style={{ marginTop: 8 }}>
+          {Object.keys(TYPE_COLORS).map((type) => {
+            const hidden = hiddenTypes.has(type);
+            return (
+              <button
+                key={type}
+                className={`settings-type-chip ${hidden ? 'is-hidden' : ''}`}
+                onClick={() => toggleType(type)}
+              >
+                <span className="settings-type-dot" style={{ background: hidden ? '#d1d5db' : TYPE_COLORS[type] }} />
+                {t.typeLabels?.[type] || type}
+              </button>
+            );
+          })}
+        </div>
+        {hiddenTypes.size > 0 && (
+          <button className="filters-clear-btn" onClick={clearFilters} style={{ marginTop: 12, width: '100%' }}>
+            {t.clearFilters} ({hiddenTypes.size})
+          </button>
+        )}
+      </div>
+
+      <div className="settings-bottom-actions">
+        <button
+          className="settings-onboarding-btn"
+          onClick={() => { setShowOnboarding(true); setIsSettingsOpen(false); }}
+        >
+          {t.onboardingReopen}
+        </button>
+        <button
+          className="settings-onboarding-btn"
+          onClick={() => { setShowAbout(true); setIsSettingsOpen(false); }}
+        >
+          {t.settingsAbout}
+        </button>
+      </div>
+    </>
+  );
 
   return (
-    <div className="app-root">
+    <div className={`app-root${darkMode ? ' dark' : ''}${theme === 'midnight' ? ' midnight' : ''}`}>
       <div className="app-header">
         <motion.div
           layout
-          className={`app-header-pill ${isSettingsOpen ? 'is-expanded' : ''}`}
-          style={{ borderRadius: isSettingsOpen ? 24 : 999 }}
+          className={`app-header-pill ${isSettingsOpen && !isMobile ? 'is-expanded' : ''}`}
+          style={{ borderRadius: isSettingsOpen && !isMobile ? 24 : 999 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         >
           <motion.div layout className="app-header-row">
-            <motion.img layout src={logoNoBackground} alt="Our History" className="app-logo" />
+            <motion.img
+              layout
+              src={darkMode ? logoWhite : logoBlack}
+              alt="Our History"
+              className="app-logo"
+              whileHover={{ y: -4 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+            />
             <motion.div layout className="app-header-text">
               <span className="app-title">Our History</span>
               <span className="app-subtitle">{statusLabel}</span>
@@ -129,8 +397,9 @@ function App() {
             </motion.button>
           </motion.div>
 
+          {/* Desktop: settings expand inside the pill */}
           <AnimatePresence mode="popLayout">
-            {isSettingsOpen && (
+            {isSettingsOpen && !isMobile && (
               <motion.div
                 layout
                 className="app-header-settings-content"
@@ -140,63 +409,66 @@ function App() {
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 style={{ marginTop: 16, transformOrigin: "top center" }}
               >
-                <div>
-                  <span className="settings-section-title-light">{t.settingsGeneral}</span>
-                  <div className="settings-option-light">
-                    <div className="settings-option-label-light">
-                      <Globe size={18} className="settings-option-icon-light" />
-                      {t.settingsLanguage}
-                    </div>
-                    <select
-                      className="settings-select-light"
-                      value={lang}
-                      onChange={(e) => setLang(e.target.value)}
-                    >
-                      <option value="pt-BR">Português</option>
-                      <option value="en-US">English</option>
-                      <option value="es-ES">Español</option>
-                      <option value="fr-FR">Français</option>
-                      <option value="de-DE">Deutsch</option>
-                      <option value="zh-CN">中文</option>
-                      <option value="ja-JP">日本語</option>
-                      <option value="ru-RU">Русский</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <span className="settings-section-title-light">{t.settingsAI}</span>
-                  <div className="settings-option-light">
-                    <div className="settings-option-label-light">
-                      <Bot size={18} className="settings-option-icon-light" />
-                      {t.settingsGuide}
-                    </div>
-                    <select
-                      className="settings-select-light"
-                      value={aiGuide}
-                      onChange={(e) => setAiGuide(e.target.value)}
-                    >
-                      <option value="historian">{t.guideHistorian}</option>
-                      <option value="professor">{t.guideProfessor}</option>
-                      <option value="child">{t.guideChild}</option>
-                    </select>
-                  </div>
-                </div>
+                {settingsContent}
               </motion.div>
             )}
           </AnimatePresence>
         </motion.div>
       </div>
 
+      {/* Mobile: settings as left drawer */}
+      <AnimatePresence>
+        {isSettingsOpen && isMobile && (
+          <>
+            <motion.div
+              className="settings-drawer-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.22 }}
+              onClick={() => setIsSettingsOpen(false)}
+            />
+            <motion.div
+              className="settings-drawer"
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300, mass: 0.9 }}
+            >
+              <div className="settings-drawer-header">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <img src={darkMode ? logoWhite : logoBlack} alt="" style={{ width: 32, height: 32, objectFit: 'contain' }} />
+                  <span className="settings-drawer-title">Our History</span>
+                </div>
+                <button
+                  className="settings-drawer-close"
+                  onClick={() => setIsSettingsOpen(false)}
+                  aria-label="Fechar"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+              <div className="settings-drawer-body">
+                {settingsContent}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       <MapComponent
         externalCenter={mapCenter}
-        pins={pins}
+        pins={filteredPins}
         onPinClick={handlePinClick}
         userPosition={userPosition}
-        onOpenStory={(pin) => fetchStory(pin)}
+        onOpenStory={fetchStory}
         onMapMove={handleMapMove}
         selectedPlace={selectedPlace}
         lang={lang}
+        scanCenter={scanCenter}
+        darkMode={darkMode}
+        theme={theme}
+        loadingNearby={loadingNearby}
       />
 
       <SearchBar onLocationSelect={handleSearchSelect} lang={lang} />
@@ -208,7 +480,7 @@ function App() {
             className={`dock-btn-locate ${locating ? 'dock-btn-locating' : ''}`}
             aria-label={t.locate}
           >
-            <Navigation size={20} className={locating ? 'animate-spin' : ''} />
+            <Navigation size={20} />
           </button>
 
           <button onClick={handleScan} className="dock-btn-scan">
@@ -222,27 +494,30 @@ function App() {
         selectedPlace={selectedPlace}
         story={story}
         loading={loadingStory}
-        onClose={() => { setSelectedPlace(null); setStory(null); }}
+        error={storyError}
+        onRetry={() => selectedPlace && fetchStory(selectedPlace)}
+        onClose={() => { setSelectedPlace(null); setStory(null); setStoryError(false); }}
         lang={lang}
       />
 
-      <AnimatePresence>
-        {loadingNearby && (
-          <motion.div
-            className="radar-wave-container"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-          >
-            <div className="radar-wave" />
-            <div className="radar-wave" style={{ animationDelay: '1s' }} />
-            <div className="radar-wave" style={{ animationDelay: '2s' }} />
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <div className="app-vignette" />
+
+      {loadingNearby && (
+        <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 500, overflow: 'hidden' }}>
+          <div className="scan-sweep" />
+        </div>
+      )}
+
+      {showOnboarding && (
+        <OnboardingOverlay onDone={handleOnboardingDone} lang={lang} darkMode={darkMode} />
+      )}
+
+      <AnimatePresence>
+        {showAbout && (
+          <AboutModal onClose={() => setShowAbout(false)} darkMode={darkMode} lang={lang} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
