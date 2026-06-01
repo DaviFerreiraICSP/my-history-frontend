@@ -2136,6 +2136,18 @@ button {
   cursor: default;
 }
 
+.onboarding-launch-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  translate: -50% -50%;
+  pointer-events: none;
+  z-index: 10;
+}
+
 .onboarding-story-progress {
   display: flex;
   gap: 5px;

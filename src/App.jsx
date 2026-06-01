@@ -478,9 +478,11 @@ function App() {
         </div>
       )}
 
-      {showOnboarding && (
-        <OnboardingOverlay onDone={handleOnboardingDone} lang={lang} darkMode={darkMode} />
-      )}
+      <AnimatePresence>
+        {showOnboarding && (
+          <OnboardingOverlay onDone={handleOnboardingDone} lang={lang} darkMode={darkMode} />
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showAbout && (
