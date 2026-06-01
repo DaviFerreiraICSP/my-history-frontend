@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { useT } from '../i18n';
 import { renderToString } from 'react-dom/server';
-import { Castle, Shield, Landmark, Church, MapPin, Heart, Pickaxe, Map as MapIcon, Swords, Train, Building, GraduationCap, Milestone, Drama, Crown, Flag } from 'lucide-react';
+import { Castle, Shield, Landmark, Church, MapPin, Heart, Pickaxe, Map as MapIcon, Swords, Train, Building, Building2, GraduationCap, Milestone, Drama, Crown, Flag } from 'lucide-react';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -19,7 +19,7 @@ L.Icon.Default.mergeOptions({
 export const TYPE_COLORS = {
   castle:              '#7C3AED',
   fort:                '#7C3AED',
-  museum:              '#2563EB',
+  museum:              '#0891B2',
   church:              '#D97706',
   monument:            '#F97316',
   memorial:            '#E879F9',
@@ -39,7 +39,7 @@ export const TYPE_COLORS = {
 const TYPE_ICONS = {
   castle: Castle,
   fort: Shield,
-  museum: Landmark,
+  museum: Building2,
   church: Church,
   monument: MapPin,
   memorial: Heart,
