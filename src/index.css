@@ -254,16 +254,18 @@ html, body, #root {
   width: 2.8rem;
   height: 2.8rem;
   border-radius: 50%;
-  background: white;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: #374151;
-  border: 1px solid rgba(0,0,0,0.05);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   cursor: pointer;
   transition: transform 0.15s ease, background 0.15s ease;
 }
 
 .dock-btn-locate:hover {
-  background: #f9fafb;
+  background: rgba(255, 255, 255, 0.96);
   transform: translateY(-1px);
 }
 .dock-btn-locate:active {
@@ -294,15 +296,17 @@ html, body, #root {
   width: 2.8rem;
   height: 2.8rem;
   border-radius: 50%;
-  background: white;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: #374151;
-  border: 1px solid rgba(0,0,0,0.05);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   cursor: pointer;
   transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 .dock-btn-filter:hover {
-  background: #f9fafb;
+  background: rgba(255, 255, 255, 0.96);
   transform: translateY(-1px);
 }
 .dock-btn-filter:active { transform: scale(0.92); }
@@ -416,14 +420,16 @@ html, body, #root {
   font-size: 0.82rem;
   font-weight: 600;
   font-family: 'Inter', system-ui, sans-serif;
-  background: rgba(220, 38, 38, 0.08);
-  border: 1.5px solid rgba(220, 38, 38, 0.2);
+  background: rgba(220, 38, 38, 0.07);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(220, 38, 38, 0.18);
   color: #DC2626;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 .filters-clear-btn:hover {
-  background: rgba(220, 38, 38, 0.14);
+  background: rgba(220, 38, 38, 0.12);
 }
 
 /* ─── Mobile Settings Drawer ─────────────────────────────────────────── */
@@ -896,14 +902,16 @@ button {
   right: 1rem;
   padding: clamp(0.5rem, 1vw + 0.2rem, 0.8rem);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, background 0.15s ease;
 }
 .story-close-btn svg {
   width: clamp(16px, 1.2vw + 10px, 22px) !important;
@@ -1039,31 +1047,33 @@ button {
   font-size: 0.78rem;
   font-weight: 600;
   text-decoration: none;
-  border: 1.5px solid transparent;
-  transition: opacity 0.15s ease, transform 0.1s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid transparent;
+  transition: opacity 0.15s ease, transform 0.1s ease, background 0.15s ease;
 }
 .story-nav-btn:active { transform: scale(0.96); }
 
 .story-nav-google {
-  background: #fef2f2;
-  border-color: #fecaca;
+  background: rgba(220, 38, 38, 0.07);
+  border-color: rgba(220, 38, 38, 0.18);
   color: #dc2626;
 }
-.story-nav-google:hover { background: #fee2e2; }
+.story-nav-google:hover { background: rgba(220, 38, 38, 0.12); }
 
 .story-nav-waze {
-  background: #eff6ff;
-  border-color: #bfdbfe;
+  background: rgba(37, 99, 235, 0.07);
+  border-color: rgba(37, 99, 235, 0.18);
   color: #2563eb;
 }
-.story-nav-waze:hover { background: #dbeafe; }
+.story-nav-waze:hover { background: rgba(37, 99, 235, 0.12); }
 
 .story-nav-apple {
-  background: #f9fafb;
-  border-color: #e5e7eb;
+  background: rgba(55, 65, 81, 0.06);
+  border-color: rgba(0, 0, 0, 0.08);
   color: #374151;
 }
-.story-nav-apple:hover { background: #f3f4f6; }
+.story-nav-apple:hover { background: rgba(55, 65, 81, 0.1); }
 
 .story-loading-skeletons {
   display: flex;
@@ -1285,14 +1295,16 @@ button {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.06);
-    border: none;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0,0,0,0.06);
     color: #6b7280;
     cursor: pointer;
     flex-shrink: 0;
     transition: background 0.15s ease;
   }
-  .search-close-internal:active { background: rgba(0,0,0,0.12); }
+  .search-close-internal:active { background: rgba(255, 255, 255, 0.9); }
 }
 
 .search-pill {
@@ -1353,7 +1365,11 @@ button {
 .search-clear {
   display: flex; align-items: center; justify-content: center;
   width: 22px; height: 22px; border-radius: 50%;
-  background: #f3f4f6; border: none; color: #6b7280;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,0,0,0.06);
+  color: #6b7280;
   cursor: pointer; flex-shrink: 0;
 }
 
@@ -1655,8 +1671,10 @@ button {
   border-radius: 8px;
   font-size: 0.8rem;
   font-weight: 600;
-  background: rgba(255,255,255,0.6);
-  border: 1.5px solid rgba(0,0,0,0.08);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0,0,0,0.08);
   color: #6b7280;
   transition: all 0.15s ease;
   font-family: 'Inter', system-ui, sans-serif;
@@ -1743,11 +1761,19 @@ button {
   border-color: rgba(255, 255, 255, 0.08);
 }
 .dark .dock-btn-locate {
-  background: #1e1e2e;
+  background: rgba(30, 30, 46, 0.85);
   color: #e2e8f0;
   border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
-.dark .dock-btn-locate:hover { background: #262636; }
+.dark .dock-btn-locate:hover { background: rgba(38, 38, 54, 0.95); }
+.dark .dock-btn-filter {
+  background: rgba(30, 30, 46, 0.85);
+  color: #e2e8f0;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.dark .dock-btn-filter:hover { background: rgba(38, 38, 54, 0.95); }
 
 /* Story panel */
 .dark .story-panel {
@@ -1780,20 +1806,23 @@ button {
 .dark .story-directions-label { color: #475569; }
 .dark .story-skeleton { background: #1e1e2e; }
 .dark .story-nav-google {
-  background: rgba(220, 38, 38, 0.1);
-  border-color: rgba(220, 38, 38, 0.3);
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.22);
   color: #f87171;
 }
+.dark .story-nav-google:hover { background: rgba(220, 38, 38, 0.14); }
 .dark .story-nav-waze {
-  background: rgba(37, 99, 235, 0.1);
-  border-color: rgba(37, 99, 235, 0.3);
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.22);
   color: #93c5fd;
 }
+.dark .story-nav-waze:hover { background: rgba(37, 99, 235, 0.14); }
 .dark .story-nav-apple {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
   color: #e2e8f0;
 }
+.dark .story-nav-apple:hover { background: rgba(255, 255, 255, 0.09); }
 @media (min-width: 768px) {
   .dark .story-panel { border-color: rgba(255, 255, 255, 0.08); }
 }
@@ -1857,7 +1886,7 @@ button {
 .dark .search-input { color: #e2e8f0; }
 .dark .search-input::placeholder { color: #475569; }
 .dark .search-bar-icon { color: #475569; }
-.dark .search-clear { background: rgba(255,255,255,0.08); color: #94a3b8; }
+.dark .search-clear { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); color: #94a3b8; }
 .dark .search-suggestions {
   background: rgba(18, 18, 32, 0.98);
   border-color: rgba(255, 255, 255, 0.1);
@@ -1995,7 +2024,9 @@ button {
   height: 32px;
   border-radius: 50%;
   border: 1px solid rgba(0,0,0,0.08);
-  background: #f9fafb;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2003,7 +2034,7 @@ button {
   color: #6B7280;
   transition: background 0.15s;
 }
-.about-close-btn:hover { background: #f3f4f6; }
+.about-close-btn:hover { background: rgba(255, 255, 255, 0.98); }
 
 .about-header {
   display: flex;
@@ -2088,8 +2119,10 @@ button {
   gap: 0.6rem;
   padding: 0.7rem 1rem;
   border-radius: 12px;
-  background: #F9FAFB;
-  border: 1px solid #F3F4F6;
+  background: rgba(249, 250, 251, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   font-family: 'Inter', sans-serif;
   font-size: 0.875rem;
   font-weight: 500;
@@ -2098,7 +2131,7 @@ button {
   transition: background 0.15s, color 0.15s;
 }
 .about-link:hover {
-  background: #F3F4F6;
+  background: rgba(243, 244, 246, 0.95);
   color: #8B5CF6;
 }
 
@@ -2111,16 +2144,16 @@ button {
 
 /* Dark mode */
 .about-overlay.dark .about-card      { background: #16162a; }
-.about-overlay.dark .about-close-btn { background: #1f1f38; border-color: rgba(255,255,255,0.08); color: #9CA3AF; }
-.about-overlay.dark .about-close-btn:hover { background: #2a2a45; }
+.about-overlay.dark .about-close-btn { background: rgba(31, 31, 56, 0.85); border-color: rgba(255,255,255,0.1); color: #9CA3AF; }
+.about-overlay.dark .about-close-btn:hover { background: rgba(42, 42, 69, 0.95); }
 .about-overlay.dark .about-app-name  { color: #F9FAFB; }
 .about-overlay.dark .about-version   { background: #1f1f38; color: #9CA3AF; }
 .about-overlay.dark .about-desc      { color: #9CA3AF; }
 .about-overlay.dark .about-divider   { background: rgba(255,255,255,0.07); }
 .about-overlay.dark .about-row-label { color: #6B7280; }
 .about-overlay.dark .about-row-value { color: #F9FAFB; }
-.about-overlay.dark .about-link      { background: #1f1f38; border-color: rgba(255,255,255,0.06); color: #D1D5DB; }
-.about-overlay.dark .about-link:hover { background: #2a2a45; color: #A78BFA; }
+.about-overlay.dark .about-link      { background: rgba(31, 31, 56, 0.8); border-color: rgba(255,255,255,0.07); color: #D1D5DB; }
+.about-overlay.dark .about-link:hover { background: rgba(42, 42, 69, 0.95); color: #A78BFA; }
 .about-overlay.dark .about-made-with { color: #374151; }
 
 /* ─── Onboarding Stories ────────────────────────────────────────────────── */
@@ -2337,24 +2370,28 @@ button {
   margin-top: 0.5rem;
   padding: 0.65rem 1.25rem;
   border-radius: 12px;
-  background: #111827;
+  background: rgba(17, 24, 39, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: white;
   font-family: 'Inter', sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   cursor: pointer;
-  transition: opacity 0.15s, transform 0.15s;
+  transition: opacity 0.15s, transform 0.15s, background 0.15s;
 }
-.story-error-retry:hover  { opacity: 0.85; transform: translateY(-1px); }
+.story-error-retry:hover  { background: rgba(17, 24, 39, 0.98); transform: translateY(-1px); }
 .story-error-retry:active { transform: scale(0.97); }
 
 .dark .story-error-icon    { background: rgba(239,68,68,0.15); }
 .dark .story-error-title   { color: #F9FAFB; }
-.dark .story-error-retry   { background: #F9FAFB; color: #111827; }
+.dark .story-error-retry   { background: rgba(249, 250, 251, 0.9); border-color: rgba(255,255,255,0.2); color: #111827; }
+.dark .story-error-retry:hover { background: rgba(249, 250, 251, 1); }
 .midnight .story-error-icon  { background: rgba(239,68,68,0.12); }
 .midnight .story-error-title { color: #F9FAFB; }
-.midnight .story-error-retry { background: #F9FAFB; color: #111827; }
+.midnight .story-error-retry { background: rgba(249, 250, 251, 0.9); border-color: rgba(255,255,255,0.2); color: #111827; }
+.midnight .story-error-retry:hover { background: rgba(249, 250, 251, 1); }
 
 .settings-bottom-actions {
   display: flex;
@@ -2369,8 +2406,10 @@ button {
   margin-top: 0;
   padding: 0.65rem 1rem;
   border-radius: 12px;
-  border: 1px solid rgba(109, 40, 217, 0.12);
-  background: rgba(109, 40, 217, 0.05);
+  border: 1px solid rgba(109, 40, 217, 0.14);
+  background: rgba(109, 40, 217, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: #7C3AED;
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
