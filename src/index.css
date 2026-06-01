@@ -1683,23 +1683,26 @@ button {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 9px;
+  padding: 5px 10px;
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 500;
-  background: rgba(255,255,255,0.7);
-  border: 1.5px solid rgba(0,0,0,0.08);
-  color: #374151;
+  background: rgba(109, 40, 217, 0.05);
+  border: 1px solid rgba(109, 40, 217, 0.12);
+  color: #4C1D95;
   transition: all 0.15s ease;
   font-family: 'Inter', system-ui, sans-serif;
 }
 .settings-type-chip.is-hidden {
-  background: rgba(0,0,0,0.04);
-  border-color: transparent;
+  background: rgba(0,0,0,0.03);
+  border-color: rgba(0,0,0,0.06);
   color: #9ca3af;
   text-decoration: line-through;
 }
-.settings-type-chip:hover { border-color: #8B5CF6; }
+.settings-type-chip:hover {
+  background: rgba(109, 40, 217, 0.1);
+  border-color: rgba(109, 40, 217, 0.22);
+}
 
 .settings-type-dot {
   width: 8px;
@@ -1809,12 +1812,13 @@ button {
   border-color: rgba(255, 255, 255, 0.12);
 }
 .dark .settings-type-chip {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #cbd5e1;
+  background: rgba(139, 92, 246, 0.08);
+  border-color: rgba(139, 92, 246, 0.18);
+  color: #C4B5FD;
 }
 .dark .settings-type-chip.is-hidden {
   background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.05);
   color: #475569;
 }
 .dark .filters-clear-btn {
@@ -2369,30 +2373,31 @@ button {
   margin-top: 0;
   padding: 0.65rem 1rem;
   border-radius: 12px;
-  border: 1.5px solid #E5E7EB;
-  background: transparent;
-  color: #6B7280;
+  border: 1px solid rgba(109, 40, 217, 0.12);
+  background: rgba(109, 40, 217, 0.05);
+  color: #7C3AED;
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
-  transition: border-color 0.18s, color 0.18s, background 0.18s;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
   text-align: center;
 }
 .settings-onboarding-btn:hover {
-  border-color: #8B5CF6;
-  color: #8B5CF6;
-  background: rgba(139, 92, 246, 0.05);
+  background: rgba(109, 40, 217, 0.1);
+  border-color: rgba(109, 40, 217, 0.22);
+  color: #6D28D9;
 }
 .dark .settings-onboarding-btn,
 .midnight .settings-onboarding-btn {
-  border-color: #374151;
-  color: #9CA3AF;
+  border-color: rgba(167, 139, 250, 0.15);
+  background: rgba(139, 92, 246, 0.07);
+  color: #A78BFA;
 }
 .dark .settings-onboarding-btn:hover,
 .midnight .settings-onboarding-btn:hover {
-  border-color: #8B5CF6;
-  color: #A78BFA;
-  background: rgba(139, 92, 246, 0.1);
+  background: rgba(139, 92, 246, 0.14);
+  border-color: rgba(167, 139, 250, 0.28);
+  color: #C4B5FD;
 }
 
