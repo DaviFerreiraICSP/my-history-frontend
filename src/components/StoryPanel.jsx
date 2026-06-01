@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, ImageOff, ExternalLink, Navigation2, Car, Compass, WifiOff, RotateCcw } from 'lucide-react';
+import { X, Sparkles, ImageOff, ExternalLink, WifiOff, RotateCcw } from 'lucide-react';
 import { useT } from '../i18n';
+import { GoogleMapsIcon, WazeIcon, AppleMapsIcon } from './BrandIcons';
 
 export default function StoryPanel({ selectedPlace, story, onClose, loading, error = false, onRetry, lang = 'pt-BR' }) {
   const t = useT(lang);
@@ -150,7 +151,7 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
                         target="_blank" rel="noopener noreferrer"
                         className="story-nav-btn story-nav-google"
                       >
-                        <Navigation2 size={14} />
+                        <GoogleMapsIcon size={16} />
                         Google Maps
                       </a>
                       <a
@@ -158,7 +159,7 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
                         target="_blank" rel="noopener noreferrer"
                         className="story-nav-btn story-nav-waze"
                       >
-                        <Car size={14} />
+                        <WazeIcon size={16} />
                         Waze
                       </a>
                       <a
@@ -166,7 +167,7 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
                         target="_blank" rel="noopener noreferrer"
                         className="story-nav-btn story-nav-apple"
                       >
-                        <Compass size={14} />
+                        <AppleMapsIcon size={16} />
                         Apple Maps
                       </a>
                     </div>
