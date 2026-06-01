@@ -2123,152 +2123,125 @@ button {
 .about-overlay.dark .about-link:hover { background: #2a2a45; color: #A78BFA; }
 .about-overlay.dark .about-made-with { color: #374151; }
 
-/* ─── Onboarding ───────────────────────────────────────────────────────── */
+/* ─── Onboarding Stories ────────────────────────────────────────────────── */
 
-/* ─── Onboarding ─────────────────────────────────────────────────────────── */
-
-.onboarding-overlay {
+.onboarding-story-overlay {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-}
-
-.onboarding-card {
-  background: #ffffff;
-  border-radius: 28px;
-  width: 100%;
-  max-width: 360px;
-  padding: 2.5rem 2rem 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.28);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: default;
+}
+
+.onboarding-story-progress {
+  display: flex;
+  gap: 5px;
+  padding: env(safe-area-inset-top, 48px) 16px 0;
+  padding-top: max(env(safe-area-inset-top, 0px), 48px);
+  flex-shrink: 0;
+}
+
+.onboarding-story-segment {
+  flex: 1;
+  height: 2.5px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.25);
   overflow: hidden;
 }
 
-.onboarding-slide {
+.onboarding-story-fill {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 99px;
+}
+
+.onboarding-story-illus {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.onboarding-story-logo {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 40px rgba(167, 139, 250, 0.45));
+}
+
+.onboarding-story-icon {
+  width: 150px;
+  height: 150px;
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.onboarding-story-body {
+  padding: 0 1.75rem max(env(safe-area-inset-bottom, 0px), 2.5rem);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  min-height: 260px;
-  width: 100%;
 }
 
-.onboarding-illustration {
-  margin-bottom: 1.75rem;
-}
-
-.onboarding-logo-wrap {
-  width: 108px;
-  height: 108px;
-  border-radius: 28px;
-  background: linear-gradient(135deg, rgba(109,40,217,0.12), rgba(139,92,246,0.1));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.onboarding-logo {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-}
-
-.onboarding-icon-wrap {
-  width: 108px;
-  height: 108px;
-  border-radius: 28px;
-  background: linear-gradient(135deg, #6D28D9, #8B5CF6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.35);
-}
-
-.onboarding-title {
+.onboarding-story-title {
   font-family: 'Geist', sans-serif;
-  font-size: 1.45rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  color: #111827;
-  margin: 0 0 0.65rem;
-  line-height: 1.25;
+  color: #ffffff;
+  margin: 0 0 0.55rem;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
 }
 
-.onboarding-desc {
+.onboarding-story-desc {
   font-family: 'Inter', sans-serif;
-  font-size: 0.925rem;
-  color: #6B7280;
-  line-height: 1.65;
-  margin: 0;
-  max-width: 280px;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+  margin: 0 0 1.75rem;
 }
 
-.onboarding-dots {
-  display: flex;
-  gap: 8px;
-  margin: 1.75rem 0 1.25rem;
-}
-
-.onboarding-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 99px;
-  background: #E5E7EB;
-  transition: all 0.3s ease;
-}
-
-.onboarding-dot.is-active {
-  width: 24px;
-  background: linear-gradient(90deg, #6D28D9, #8B5CF6);
-}
-
-.onboarding-btn-primary {
+.onboarding-story-btn {
   width: 100%;
-  padding: 0.9rem;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #6D28D9, #8B5CF6);
-  color: white;
+  padding: 1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #111827;
   font-family: 'Geist', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   border: none;
   cursor: pointer;
   transition: opacity 0.18s, transform 0.15s;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
-.onboarding-btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-.onboarding-btn-primary:active { transform: scale(0.98); }
+.onboarding-story-btn:hover  { opacity: 0.9; transform: translateY(-1px); }
+.onboarding-story-btn:active { transform: scale(0.98); opacity: 0.85; }
 
-.onboarding-btn-skip {
+.onboarding-story-skip {
   background: none;
   border: none;
-  color: #9CA3AF;
+  color: rgba(255, 255, 255, 0.4);
   font-family: 'Inter', sans-serif;
   font-size: 0.875rem;
   cursor: pointer;
   margin-top: 0.75rem;
-  padding: 0.3rem 0.75rem;
+  padding: 0.4rem;
+  text-align: center;
   transition: color 0.15s;
 }
-.onboarding-btn-skip:hover { color: #6B7280; }
-
-/* Dark mode */
-.onboarding-overlay.dark .onboarding-card  { background: #16162a; }
-.onboarding-overlay.dark .onboarding-logo-wrap {
-  background: linear-gradient(135deg, rgba(109,40,217,0.2), rgba(139,92,246,0.15));
-}
-.onboarding-overlay.dark .onboarding-title { color: #F9FAFB; }
-.onboarding-overlay.dark .onboarding-desc  { color: #9CA3AF; }
-.onboarding-overlay.dark .onboarding-dot   { background: #374151; }
-.onboarding-overlay.dark .onboarding-btn-skip { color: #6B7280; }
+.onboarding-story-skip:hover { color: rgba(255, 255, 255, 0.75); }
 
 /* ─── Story error state ────────────────────────────────────────────────── */
 
