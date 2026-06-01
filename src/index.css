@@ -51,6 +51,15 @@ html, body, #root {
   pointer-events: none; /* Let touches pass if they miss the pill */
 }
 
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
 .app-header-pill {
   position: relative;
   pointer-events: auto;

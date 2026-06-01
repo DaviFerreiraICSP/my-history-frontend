@@ -365,7 +365,10 @@ function App() {
 
   return (
     <div className={`app-root${darkMode ? ' dark' : ''}${theme === 'midnight' ? ' midnight' : ''}`}>
-      <div className="app-header">
+      {isSettingsOpen && (
+        <div className="settings-overlay" onClick={() => setIsSettingsOpen(false)} />
+      )}
+      <div className="app-header" style={isSettingsOpen ? { zIndex: 1100 } : undefined}>
         <motion.div
           layout
           className={`app-header-pill ${isSettingsOpen ? 'is-expanded' : ''}`}
