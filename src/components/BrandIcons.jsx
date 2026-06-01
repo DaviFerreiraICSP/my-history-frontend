@@ -1,53 +1,39 @@
-// App icon style — colored rounded square background with white logo inside
+import googleMapsLogo from '../assets/googlemaps.svg';
+import wazeLogo from '../assets/waze.svg';
+import appleMapsLogo from '../assets/applemaps.png';
 
-export function GoogleMapsIcon({ size = 16 }) {
+export function GoogleMapsIcon({ size = 18 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* White background with subtle border */}
-      <rect width="24" height="24" rx="5.5" fill="white"/>
-      <rect x="0.5" y="0.5" width="23" height="23" rx="5.2" fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth="0.8"/>
-      {/* Google Maps colorful pin — scaled to fit with padding */}
-      <g transform="translate(3.2, 1.5) scale(0.74)">
-        <path fill="#EA4335" d="M19.527 4.799c1.212 2.608.937 5.678-.405 8.173-1.101 2.047-2.744 3.74-4.098 5.614-.619.858-1.244 1.75-1.669 2.727-.141.325-.263.658-.383.992-.121.333-.224.673-.34 1.008-.109.314-.236.684-.627.687h-.007c-.466-.001-.579-.53-.695-.887-.284-.874-.581-1.713-1.019-2.525-.51-.944-1.145-1.817-1.79-2.671L19.527 4.799z"/>
-        <path fill="#FBBC04" d="M8.545 7.705l-3.959 4.707c.724 1.54 1.821 2.863 2.871 4.18.247.31.494.622.737.936l4.984-5.925-.029.01c-1.741.601-3.691-.291-4.392-1.987a3.377 3.377 0 0 1-.209-.716c-.063-.437-.077-.761-.004-1.198l.001-.007z"/>
-        <path fill="#4285F4" d="M5.492 3.149l-.003.004c-1.947 2.466-2.281 5.88-1.117 8.77l4.785-5.689-.058-.05-3.607-3.035z"/>
-        <path fill="#34A853" d="M14.661.436l-3.838 4.563a.295.295 0 0 1 .027-.01c1.6-.551 3.403.15 4.22 1.626.176.319.323.683.377 1.045.068.446.085.773.012 1.22l-.003.016 3.836-4.561A8.382 8.382 0 0 0 14.67.439l-.009-.003z"/>
-        <path fill="#EA4335" d="M9.466 5.868L14.162.285l-.047-.012A8.31 8.31 0 0 0 11.986 0a8.439 8.439 0 0 0-6.169 2.766l-.016.018 3.665 3.084z"/>
-      </g>
-    </svg>
+    <img
+      src={googleMapsLogo}
+      width={size}
+      height={size}
+      alt="Google Maps"
+      style={{ objectFit: 'contain', display: 'block', flexShrink: 0 }}
+    />
   );
 }
 
-export function WazeIcon({ size = 16 }) {
+export function WazeIcon({ size = 18 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Cyan app icon background */}
-      <rect width="24" height="24" rx="5.5" fill="#33CCFF"/>
-      {/* White Waze character — scaled with padding */}
-      <g transform="translate(3, 2) scale(0.75)">
-        <path fill="white" d="M13.218 0C9.915 0 6.835 1.49 4.723 4.148c-1.515 1.913-2.31 4.272-2.31 6.706v1.739c0 .894-.62 1.738-1.862 1.813-.298.025-.547.224-.547.522-.05.82.82 2.31 2.012 3.502.82.844 1.788 1.515 2.832 2.036a3 3 0 0 0 2.955 3.528 2.966 2.966 0 0 0 2.931-2.385h2.509c.323 1.689 2.086 2.856 3.974 2.21 1.64-.546 2.36-2.409 1.763-3.924a12.84 12.84 0 0 0 1.838-1.465 10.73 10.73 0 0 0 3.18-7.65c0-2.882-1.118-5.589-3.155-7.625A10.899 10.899 0 0 0 13.218 0zm0 1.217c2.558 0 4.967.994 6.78 2.807a9.525 9.525 0 0 1 2.807 6.78A9.526 9.526 0 0 1 20 17.585a9.647 9.647 0 0 1-6.78 2.807h-2.46a3.008 3.008 0 0 0-2.93-2.41 3.03 3.03 0 0 0-2.534 1.367v.024a8.945 8.945 0 0 1-2.41-1.788c-.844-.844-1.316-1.614-1.515-2.11a2.858 2.858 0 0 0 1.441-.846 2.959 2.959 0 0 0 .795-2.036v-1.789c0-2.11.696-4.197 2.012-5.861 1.863-2.385 4.62-3.726 7.6-3.726zm-2.41 5.986a1.192 1.192 0 0 0-1.191 1.192 1.192 1.192 0 0 0 1.192 1.193A1.192 1.192 0 0 0 12 8.395a1.192 1.192 0 0 0-1.192-1.192zm7.204 0a1.192 1.192 0 0 0-1.192 1.192 1.192 1.192 0 0 0 1.192 1.193 1.192 1.192 0 0 0 1.192-1.193 1.192 1.192 0 0 0-1.192-1.192zm-7.377 4.769a.596.596 0 0 0-.546.845 4.813 4.813 0 0 0 4.346 2.757 4.77 4.77 0 0 0 4.347-2.757.596.596 0 0 0-.547-.845h-.025a.561.561 0 0 0-.521.348 3.59 3.59 0 0 1-3.254 2.061 3.591 3.591 0 0 1-3.254-2.061.64.64 0 0 0-.546-.348z"/>
-      </g>
-    </svg>
+    <img
+      src={wazeLogo}
+      width={size}
+      height={size}
+      alt="Waze"
+      style={{ objectFit: 'contain', display: 'block', flexShrink: 0 }}
+    />
   );
 }
 
-export function AppleMapsIcon({ size = 16 }) {
+export function AppleMapsIcon({ size = 18 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* iOS Maps green gradient background */}
-      <defs>
-        <linearGradient id="iosMapGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#5EDB6F"/>
-          <stop offset="100%" stopColor="#1C8B2E"/>
-        </linearGradient>
-      </defs>
-      <rect width="24" height="24" rx="5.5" fill="url(#iosMapGrad)"/>
-      {/* White road — horizontal */}
-      <rect x="2" y="10.5" width="20" height="3" rx="1" fill="white"/>
-      {/* White road — vertical */}
-      <rect x="10.5" y="2" width="3" height="20" rx="1" fill="white"/>
-      {/* Navigation arrow (iOS red) */}
-      <path d="M12 4.5 L15.5 11.5 L12 9.8 L8.5 11.5 Z" fill="#FF3B30"/>
-    </svg>
+    <img
+      src={appleMapsLogo}
+      width={size}
+      height={size}
+      alt="Apple Maps"
+      style={{ objectFit: 'contain', display: 'block', flexShrink: 0, borderRadius: '4px' }}
+    />
   );
 }
