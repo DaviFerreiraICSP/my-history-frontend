@@ -286,7 +286,7 @@ function App() {
             <option value="ru-RU">Русский</option>
           </select>
         </div>
-        <div className="settings-option-light" style={{ marginTop: '0.75rem' }}>
+        <div className="settings-option-light">
           <div className="settings-option-label-light">
             <Moon size={18} className="settings-option-icon-light" />
             {t.settingsDarkMode}

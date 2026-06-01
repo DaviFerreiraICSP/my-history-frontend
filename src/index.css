@@ -1573,43 +1573,42 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  border-radius: 12px;
-  box-shadow: inset 0 2px 4px rgba(255,255,255,0.5), 0 2px 5px rgba(0,0,0,0.02);
+  padding: 11px 2px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.settings-option-light:last-of-type {
+  border-bottom: none;
 }
 
 .settings-option-label-light {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.95rem;
-  font-weight: 600;
+  gap: 9px;
+  font-size: 0.9rem;
+  font-weight: 500;
   color: #374151;
 }
 
 .settings-option-icon-light {
   color: #8B5CF6;
+  flex-shrink: 0;
 }
 
 .settings-select-light {
-  background: rgba(255,255,255,0.9);
-  color: #111827;
-  border: 1px solid rgba(0,0,0,0.08);
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  background: transparent;
+  color: #7C3AED;
+  border: none;
+  padding: 4px 0 4px 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
   outline: none;
   cursor: pointer;
   font-family: 'Inter', system-ui, sans-serif;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  max-width: 130px;
 }
 
 .settings-select-light:focus {
-  border-color: #8B5CF6;
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+  color: #6D28D9;
 }
 
 .settings-toggle {
@@ -1802,14 +1801,11 @@ button {
 /* Settings — shared content (pill + drawer) */
 .dark .settings-section-title-light { color: #475569; }
 .dark .settings-option-light {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.06);
+  border-bottom-color: rgba(255, 255, 255, 0.07);
 }
 .dark .settings-option-label-light { color: #e2e8f0; }
 .dark .settings-select-light {
-  background: rgba(255, 255, 255, 0.07);
-  color: #e2e8f0;
-  border-color: rgba(255, 255, 255, 0.12);
+  color: #A78BFA;
 }
 .dark .settings-type-chip {
   background: rgba(139, 92, 246, 0.08);
