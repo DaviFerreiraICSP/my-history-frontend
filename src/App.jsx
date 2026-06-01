@@ -411,6 +411,12 @@ function App() {
                 exit={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 style={{ marginTop: 16, transformOrigin: "top center" }}
+                onScroll={e => {
+                  const el = e.currentTarget;
+                  el.classList.add('is-scrolling');
+                  clearTimeout(el._scrollTimer);
+                  el._scrollTimer = setTimeout(() => el.classList.remove('is-scrolling'), 600);
+                }}
               >
                 {settingsContent}
               </motion.div>
