@@ -368,8 +368,8 @@ function App() {
       <div className="app-header">
         <motion.div
           layout
-          className={`app-header-pill ${isSettingsOpen && !isMobile ? 'is-expanded' : ''}`}
-          style={{ borderRadius: isSettingsOpen && !isMobile ? 24 : 999 }}
+          className={`app-header-pill ${isSettingsOpen ? 'is-expanded' : ''}`}
+          style={{ borderRadius: isSettingsOpen ? 24 : 999 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         >
           <motion.div layout className="app-header-row">
@@ -397,9 +397,9 @@ function App() {
             </motion.button>
           </motion.div>
 
-          {/* Desktop: settings expand inside the pill */}
+          {/* Settings expand inside the pill — same on mobile and desktop */}
           <AnimatePresence mode="popLayout">
-            {isSettingsOpen && !isMobile && (
+            {isSettingsOpen && (
               <motion.div
                 layout
                 className="app-header-settings-content"
@@ -415,46 +415,6 @@ function App() {
           </AnimatePresence>
         </motion.div>
       </div>
-
-      {/* Mobile: settings as left drawer */}
-      <AnimatePresence>
-        {isSettingsOpen && isMobile && (
-          <>
-            <motion.div
-              className="settings-drawer-overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.22 }}
-              onClick={() => setIsSettingsOpen(false)}
-            />
-            <motion.div
-              className="settings-drawer"
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', damping: 30, stiffness: 300, mass: 0.9 }}
-            >
-              <div className="settings-drawer-header">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <img src={darkMode ? logoWhite : logoBlack} alt="" style={{ width: 32, height: 32, objectFit: 'contain' }} />
-                  <span className="settings-drawer-title">Our History</span>
-                </div>
-                <button
-                  className="settings-drawer-close"
-                  onClick={() => setIsSettingsOpen(false)}
-                  aria-label="Fechar"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-              <div className="settings-drawer-body">
-                {settingsContent}
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
 
       <MapComponent
         externalCenter={mapCenter}
