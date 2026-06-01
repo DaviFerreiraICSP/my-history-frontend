@@ -2,21 +2,32 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Map, Navigation2 } from 'lucide-react';
 import logoWhite from '../assets/our_history_white.png';
+import logoBlack from '../assets/our_history_black.png';
 import { useT } from '../i18n';
 
 const TOTAL = 3;
 
-const GRADIENTS = [
+const DARK_GRADIENTS = [
   'linear-gradient(160deg, #1a0533 0%, #2d1257 55%, #0f0a1e 100%)',
   'linear-gradient(160deg, #0a1628 0%, #0f2a50 55%, #080d17 100%)',
   'linear-gradient(160deg, #0f1219 0%, #1c2a40 55%, #080d12 100%)',
 ];
 
-export default function OnboardingOverlay({ onDone, lang }) {
+const LIGHT_GRADIENTS = [
+  'linear-gradient(160deg, #f5f0ff 0%, #ede9fe 55%, #faf5ff 100%)',
+  'linear-gradient(160deg, #eff6ff 0%, #dbeafe 55%, #f0f9ff 100%)',
+  'linear-gradient(160deg, #f0f4ff 0%, #e0e7ff 55%, #f8faff 100%)',
+];
+
+export default function OnboardingOverlay({ onDone, lang, darkMode }) {
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(1);
   const t = useT(lang);
   const touchStartX = useRef(null);
+
+  const gradients = darkMode ? DARK_GRADIENTS : LIGHT_GRADIENTS;
+  const iconColor = darkMode ? 'white' : '#4C1D95';
+  const logo = darkMode ? logoWhite : logoBlack;
 
   const goTo = (next, direction) => {
     if (next < 0) return;
@@ -41,15 +52,15 @@ export default function OnboardingOverlay({ onDone, lang }) {
   const slides = [
     {
       illustration: (
-        <img src={logoWhite} alt="Our History" className="onboarding-story-logo" />
+        <img src={logo} alt="Our History" className="onboarding-story-logo" />
       ),
       title: t.onboarding1Title,
       desc: t.onboarding1Desc,
     },
     {
       illustration: (
-        <div className="onboarding-story-icon">
-          <Map size={64} color="white" strokeWidth={1.2} />
+        <div className={`onboarding-story-icon${darkMode ? '' : ' light'}`}>
+          <Map size={72} color={iconColor} strokeWidth={1.2} />
         </div>
       ),
       title: t.onboarding2Title,
@@ -57,8 +68,8 @@ export default function OnboardingOverlay({ onDone, lang }) {
     },
     {
       illustration: (
-        <div className="onboarding-story-icon">
-          <Navigation2 size={64} color="white" strokeWidth={1.2} />
+        <div className={`onboarding-story-icon${darkMode ? '' : ' light'}`}>
+          <Navigation2 size={72} color={iconColor} strokeWidth={1.2} />
         </div>
       ),
       title: t.onboarding3Title,
@@ -71,10 +82,10 @@ export default function OnboardingOverlay({ onDone, lang }) {
 
   return (
     <motion.div
-      className="onboarding-story-overlay"
-      animate={{ background: GRADIENTS[step] }}
+      className={`onboarding-story-overlay${darkMode ? '' : ' light'}`}
+      animate={{ background: gradients[step] }}
       transition={{ duration: 0.55, ease: 'easeInOut' }}
-      style={{ background: GRADIENTS[0] }}
+      style={{ background: gradients[0] }}
       onClick={handleTap}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
@@ -109,7 +120,7 @@ export default function OnboardingOverlay({ onDone, lang }) {
         </AnimatePresence>
       </div>
 
-      {/* Text + buttons — stopPropagation to avoid triggering tap navigation */}
+      {/* Text + buttons */}
       <div className="onboarding-story-body" onClick={e => e.stopPropagation()}>
         <AnimatePresence mode="wait">
           <motion.div

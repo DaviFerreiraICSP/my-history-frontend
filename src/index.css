@@ -2167,16 +2167,20 @@ button {
 }
 
 .onboarding-story-logo {
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   object-fit: contain;
-  filter: drop-shadow(0 0 40px rgba(167, 139, 250, 0.45));
+  filter: drop-shadow(0 0 48px rgba(167, 139, 250, 0.5));
+}
+
+.onboarding-story-overlay.light .onboarding-story-logo {
+  filter: drop-shadow(0 4px 24px rgba(109, 40, 217, 0.25));
 }
 
 .onboarding-story-icon {
-  width: 150px;
-  height: 150px;
-  border-radius: 40px;
+  width: 170px;
+  height: 170px;
+  border-radius: 44px;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -2185,6 +2189,12 @@ button {
   align-items: center;
   justify-content: center;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.onboarding-story-icon.light {
+  background: rgba(109, 40, 217, 0.08);
+  border: 1px solid rgba(109, 40, 217, 0.15);
+  box-shadow: 0 8px 40px rgba(109, 40, 217, 0.12);
 }
 
 .onboarding-story-body {
@@ -2242,6 +2252,31 @@ button {
   transition: color 0.15s;
 }
 .onboarding-story-skip:hover { color: rgba(255, 255, 255, 0.75); }
+
+/* Light mode overrides */
+.onboarding-story-overlay.light .onboarding-story-segment {
+  background: rgba(109, 40, 217, 0.18);
+}
+.onboarding-story-overlay.light .onboarding-story-fill {
+  background: #6D28D9;
+}
+.onboarding-story-overlay.light .onboarding-story-title {
+  color: #1a0533;
+}
+.onboarding-story-overlay.light .onboarding-story-desc {
+  color: rgba(55, 20, 100, 0.65);
+}
+.onboarding-story-overlay.light .onboarding-story-btn {
+  background: #6D28D9;
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(109, 40, 217, 0.35);
+}
+.onboarding-story-overlay.light .onboarding-story-skip {
+  color: rgba(109, 40, 217, 0.45);
+}
+.onboarding-story-overlay.light .onboarding-story-skip:hover {
+  color: rgba(109, 40, 217, 0.8);
+}
 
 /* ─── Story error state ────────────────────────────────────────────────── */
 
