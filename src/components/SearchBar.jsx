@@ -97,9 +97,15 @@ export default function SearchBar({ onLocationSelect, lang = 'pt-BR' }) {
               className="search-input"
             />
             {query && (
-              <button className="search-clear" onClick={() => { setQuery(''); setSuggestions([]); setNotFound(false); inputRef.current?.focus(); }}>
+              <motion.button
+                className="search-clear"
+                onClick={() => { setQuery(''); setSuggestions([]); setNotFound(false); inputRef.current?.focus(); }}
+                whileHover={{ scale: 1.15, rotate: 90 }}
+                whileTap={{ scale: 0.85 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+              >
                 <X size={13} />
-              </button>
+              </motion.button>
             )}
             <button className="search-go" onClick={loading ? undefined : handleSearch} aria-label="Buscar">
               {loading
@@ -107,9 +113,16 @@ export default function SearchBar({ onLocationSelect, lang = 'pt-BR' }) {
                 : <Search size={15} />
               }
             </button>
-            <button className="search-close-internal" onClick={handleClose} aria-label="Fechar busca">
+            <motion.button
+              className="search-close-internal"
+              onClick={handleClose}
+              aria-label="Fechar busca"
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.88 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+            >
               <X size={15} />
-            </button>
+            </motion.button>
 
             <AnimatePresence>
               {(suggestions.length > 0 || notFound) && (
@@ -143,6 +156,8 @@ export default function SearchBar({ onLocationSelect, lang = 'pt-BR' }) {
         aria-label={expanded ? "Fechar busca" : "Buscar"}
         initial={false}
         animate={{ rotate: expanded ? 90 : 0 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.88 }}
         transition={{ type: 'spring', damping: 28, stiffness: 320 }}
       >
         {expanded ? <X size={16} /> : <Search size={18} />}

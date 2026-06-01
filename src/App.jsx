@@ -395,6 +395,9 @@ function App() {
               className="app-header-settings-btn"
               onClick={() => setIsSettingsOpen(!isSettingsOpen)}
               aria-label={isSettingsOpen ? 'Fechar' : 'Configurações'}
+              whileHover={{ scale: 1.1, rotate: isSettingsOpen ? 90 : 0 }}
+              whileTap={{ scale: 0.88 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 18 }}
             >
               {isSettingsOpen ? <X size={18} /> : <Settings size={18} />}
             </motion.button>

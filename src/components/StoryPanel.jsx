@@ -76,9 +76,16 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
               </div>
             )}
             <div className="story-hero-fade" />
-            <button className="story-close-btn" onClick={onClose} aria-label="Fechar">
+            <motion.button
+              className="story-close-btn"
+              onClick={onClose}
+              aria-label="Fechar"
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.88 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+            >
               <X size={16} style={{ color: '#374151' }} />
-            </button>
+            </motion.button>
           </div>
 
 
