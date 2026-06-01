@@ -1,8 +1,8 @@
 import { useState, useCallback, useRef } from 'react';
 import { Navigation, Compass, Settings, Globe, Bot, X, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import logoBlack from './assets/logo-black.png';
-import logoWhite from './assets/logo-white.png';
+import logoBlack from './assets/logo_black.png';
+import logoWhite from './assets/logo_white.png';
 import MapComponent, { TYPE_COLORS } from './components/MapComponent';
 import SearchBar from './components/SearchBar';
 import OnboardingOverlay from './components/OnboardingOverlay';

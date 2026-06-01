@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Map, Navigation2 } from 'lucide-react';
-import logoBlack from '../assets/logo-black.png';
-import logoWhite from '../assets/logo-white.png';
+import logoBlack from '../assets/our_history_black.png';
+import logoWhite from '../assets/our_history_white.png';
 import { useT } from '../i18n';
 
 const TOTAL = 3;
