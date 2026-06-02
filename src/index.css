@@ -863,26 +863,14 @@ button {
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 60%, #fbbf24 100%);
 }
 
-.story-wonder-banner {
-  display: flex;
+.story-type-wonder {
+  color: #92400e !important;
+  background: linear-gradient(90deg, rgba(253, 224, 71, 0.25), rgba(217, 119, 6, 0.15));
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(234, 179, 8, 0.35);
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  padding: 0.4rem 1.25rem;
-  background: linear-gradient(90deg, #FCD34D22, #D9770622, #FCD34D22);
-  background-size: 200% 100%;
-  animation: wonderBannerShimmer 3s ease-in-out infinite;
-  color: #92400e;
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  border-bottom: 1px solid rgba(234, 179, 8, 0.2);
-}
-
-@keyframes wonderBannerShimmer {
-  0%, 100% { background-position: 0% 0; }
-  50%       { background-position: 100% 0; }
 }
 
 .story-title-wonder {

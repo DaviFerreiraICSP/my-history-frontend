@@ -99,20 +99,6 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
             </motion.button>
           </div>
 
-          {/* Wonder banner — shown only for world wonders */}
-          {isWonder && !loading && (
-            <motion.div
-              className="story-wonder-banner"
-              variants={reveal}
-              initial="hidden"
-              animate="visible"
-            >
-              <Crown size={13} strokeWidth={2.5} />
-              <span>Maravilha do Mundo</span>
-              <Sparkles size={11} strokeWidth={2} />
-            </motion.div>
-          )}
-
           {/* Header */}
           <div className="story-header">
             {loading ? (
@@ -129,11 +115,17 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
               </motion.h2>
             )}
             <div className="story-header-meta">
-              <span className="story-type">
+              <span className={`story-type${isWonder ? ' story-type-wonder' : ''}`}>
                 {loading ? (
                   <span className="loading-dots">
                     <span /><span /><span />
                   </span>
+                ) : isWonder ? (
+                  <>
+                    <Crown size={11} strokeWidth={2.5} style={{ display: 'inline', marginRight: 3, verticalAlign: 'middle' }} />
+                    {typeLabel}
+                    <Sparkles size={10} strokeWidth={2} style={{ display: 'inline', marginLeft: 3, verticalAlign: 'middle' }} />
+                  </>
                 ) : typeLabel}
               </span>
               {!loading && wikiUrl && (
