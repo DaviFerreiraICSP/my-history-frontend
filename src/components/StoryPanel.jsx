@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sparkles, ImageOff, ExternalLink, WifiOff, RotateCcw } from 'lucide-react';
+
+const reveal = {
+  hidden:  { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 260, damping: 22 } },
+};
+const stagger = {
+  hidden:  {},
+  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.05 } },
+};
 import { useT } from '../i18n';
 import { GoogleMapsIcon, WazeIcon, AppleMapsIcon } from './BrandIcons';
 
@@ -95,7 +104,15 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
             {loading ? (
               <div className="story-skeleton story-skeleton-title" />
             ) : (
-              <h2 className="story-title">{selectedPlace?.name}</h2>
+              <motion.h2
+                key={selectedPlace?.id + '_title'}
+                className="story-title"
+                variants={reveal}
+                initial="hidden"
+                animate="visible"
+              >
+                {selectedPlace?.name}
+              </motion.h2>
             )}
             <div className="story-header-meta">
               <span className="story-type">
@@ -106,10 +123,19 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
                 ) : typeLabel}
               </span>
               {!loading && wikiUrl && (
-                <a href={wikiUrl} target="_blank" rel="noopener noreferrer" className="story-wiki-top-link">
+                <motion.a
+                  key={selectedPlace?.id + '_wiki'}
+                  href={wikiUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="story-wiki-top-link"
+                  variants={reveal}
+                  initial="hidden"
+                  animate="visible"
+                >
                   <ExternalLink size={11} />
                   Wikipedia
-                </a>
+                </motion.a>
               )}
             </div>
           </div>
@@ -117,7 +143,12 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
           {/* Body */}
           <div className="story-body">
             {error ? (
-              <div className="story-error">
+              <motion.div
+                className="story-error"
+                variants={reveal}
+                initial="hidden"
+                animate="visible"
+              >
                 <div className="story-error-icon">
                   <WifiOff size={28} />
                 </div>
@@ -127,7 +158,7 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
                   <RotateCcw size={15} />
                   {t.errorRetry}
                 </button>
-              </div>
+              </motion.div>
             ) : loading ? (
               <div className="story-loading-skeletons">
                 {[100, 85, 100, 70, 95, 60].map((w, i) => (
@@ -135,15 +166,23 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
                 ))}
               </div>
             ) : (
-              <>
+              <motion.div
+                key={selectedPlace?.id + '_content'}
+                variants={stagger}
+                initial="hidden"
+                animate="visible"
+                style={{ display: 'contents' }}
+              >
                 {paragraphs.length > 0 ? paragraphs.map((para, idx) => (
-                  <p key={idx} className="story-paragraph">{para}</p>
+                  <motion.p key={idx} className="story-paragraph" variants={reveal}>
+                    {para}
+                  </motion.p>
                 )) : (
-                  <p className="story-empty">{t.noStory}</p>
+                  <motion.p className="story-empty" variants={reveal}>{t.noStory}</motion.p>
                 )}
 
                 {selectedPlace?.lat && selectedPlace?.lon && (
-                  <div className="story-directions">
+                  <motion.div className="story-directions" variants={reveal}>
                     <span className="story-directions-label">{t.directions}</span>
                     <div className="story-directions-buttons">
                       <a
@@ -171,9 +210,9 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
                         Apple Maps
                       </a>
                     </div>
-                  </div>
+                  </motion.div>
                 )}
-              </>
+              </motion.div>
             )}
           </div>
         </motion.div>
