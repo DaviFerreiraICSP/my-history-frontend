@@ -36,7 +36,7 @@ export const TYPE_COLORS = {
   event_site:          '#7C2D12',
 };
 
-const TYPE_ICONS = {
+export const TYPE_ICONS = {
   castle: Castle,
   fort: Shield,
   museum: Building2,
@@ -243,43 +243,39 @@ function MapComponent({ pins, onPinClick, userPosition, externalCenter, onOpenSt
               eventHandlers={{ click: () => onPinClick(pin) }}
             >
               <Popup className="transparent-popup" closeButton={false}>
-                {selectedPlace?.id !== pin.id && (
-                  isMobileDevice ? (
-                    <div className="marker-preview-card">
-                      <div className="marker-preview-type">
-                        {t.typeLabels[pin.type] || t.typeLabels.historical_landmark}
-                      </div>
-                      <h3 className="marker-preview-name">{pin.name}</h3>
-                      <button className="marker-preview-open" onClick={(e) => {
-                        e.stopPropagation();
-                        if (onOpenStory) onOpenStory(pin);
-                      }}>
-                        {t.viewStory}
-                        <ChevronRight size={15} />
-                      </button>
-                    </div>
-                  ) : (
+                {selectedPlace?.id !== pin.id && (() => {
+                  const color   = TYPE_COLORS[pin.type] || TYPE_COLORS.historical_landmark;
+                  const TypeIcon = TYPE_ICONS[pin.type] || TYPE_ICONS.historical_landmark;
+                  const label   = t.typeLabels[pin.type] || t.typeLabels.historical_landmark;
+                  return (
                     <motion.div
-                      layoutId={`story-card-${pin.id}`}
-                      initial={{ scale: 0.3, opacity: 0, y: 10 }}
-                      animate={{ scale: 1, opacity: 1, y: 0 }}
-                      transition={{ type: 'spring', damping: 25, stiffness: 200, mass: 1 }}
+                      layoutId={isMobileDevice ? undefined : `story-card-${pin.id}`}
                       className="marker-preview-card"
+                      initial={{ scale: 0.82, opacity: 0, y: 10 }}
+                      animate={{ scale: 1,    opacity: 1, y: 0  }}
+                      transition={{ type: 'spring', stiffness: 380, damping: 26 }}
                     >
-                      <div className="marker-preview-type">
-                        {t.typeLabels[pin.type] || t.typeLabels.historical_landmark}
+                      <div className="marker-preview-header">
+                        <div className="marker-preview-icon" style={{ background: `${color}1a`, color }}>
+                          <TypeIcon size={15} strokeWidth={2} />
+                        </div>
+                        <span className="marker-preview-type">{label}</span>
                       </div>
                       <h3 className="marker-preview-name">{pin.name}</h3>
-                      <button className="marker-preview-open" onClick={(e) => {
-                        e.stopPropagation();
-                        if (onOpenStory) onOpenStory(pin);
-                      }}>
+                      <motion.button
+                        className="marker-preview-open"
+                        style={{ background: `linear-gradient(135deg, ${color}, ${color}cc)` }}
+                        onClick={(e) => { e.stopPropagation(); if (onOpenStory) onOpenStory(pin); }}
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.96 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+                      >
                         {t.viewStory}
-                        <ChevronRight size={15} />
-                      </button>
+                        <ChevronRight size={14} />
+                      </motion.button>
                     </motion.div>
-                  )
-                )}
+                  );
+                })()}
               </Popup>
             </Marker>
           ))}
