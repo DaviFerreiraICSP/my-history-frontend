@@ -859,9 +859,6 @@ button {
   box-shadow: 0 -8px 40px rgba(234, 179, 8, 0.2), 0 -2px 12px rgba(0, 0, 0, 0.08);
 }
 
-.story-panel-wonder .story-hero-placeholder:not(.story-hero-no-img) {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 60%, #fbbf24 100%);
-}
 
 .story-type-wonder {
   color: #92400e !important;
