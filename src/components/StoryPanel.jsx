@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sparkles, ImageOff, ExternalLink, WifiOff, RotateCcw } from 'lucide-react';
+import { TYPE_COLORS, TYPE_ICONS } from './MapComponent';
 
 const reveal = {
   hidden:  { opacity: 0, y: 14 },
@@ -18,6 +19,10 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
   const storyText = typeof story === 'object' ? story?.text : story;
   const photoUrl  = typeof story === 'object' ? story?.photo : null;
   const wikiUrl   = typeof story === 'object' ? story?.wikiUrl : null;
+
+  const color    = TYPE_COLORS[selectedPlace?.type] || TYPE_COLORS.historical_landmark;
+  const TypeIcon = TYPE_ICONS[selectedPlace?.type]  || TYPE_ICONS.historical_landmark;
+  const isWonder = selectedPlace?.type === 'wonder';
 
   const [imgStatus, setImgStatus] = useState('idle');
   useEffect(() => {
@@ -44,7 +49,7 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
       {(selectedPlace || loading) && (
         <motion.div
           layoutId={selectedPlace ? `story-card-${selectedPlace.id}` : undefined}
-          className="story-panel"
+          className={`story-panel${isWonder ? ' story-panel-wonder' : ''}`}
           initial={{ y: '100%' }}
           animate={{ y: 0 }}
           exit={{ y: '100%', opacity: 0 }}
@@ -77,7 +82,7 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
               </>
             ) : loading ? (
               <div className="story-hero-placeholder">
-                <Sparkles size={40} style={{ color: '#c4b5fd', animation: 'sparkleFloat 2s ease-in-out infinite' }} />
+                <Sparkles size={40} style={{ color: isWonder ? '#F59E0B' : color, animation: 'sparkleFloat 2s ease-in-out infinite' }} />
               </div>
             ) : (
               <div className="story-hero-placeholder story-hero-no-img">
@@ -115,12 +120,20 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
               </motion.h2>
             )}
             <div className="story-header-meta">
-              <span className="story-type">
+              <span className="story-type" style={{ color }}>
                 {loading ? (
                   <span className="loading-dots">
                     <span /><span /><span />
                   </span>
-                ) : typeLabel}
+                ) : (
+                  <>
+                    {isWonder
+                      ? <Sparkles size={11} style={{ display: 'inline', marginRight: 3, verticalAlign: 'middle' }} />
+                      : <TypeIcon  size={11} style={{ display: 'inline', marginRight: 3, verticalAlign: 'middle' }} />
+                    }
+                    {typeLabel}
+                  </>
+                )}
               </span>
               {!loading && wikiUrl && (
                 <motion.a
@@ -129,6 +142,7 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
                   target="_blank"
                   rel="noopener noreferrer"
                   className="story-wiki-top-link"
+                  style={{ color, background: `${color}18`, borderColor: `${color}38` }}
                   variants={reveal}
                   initial="hidden"
                   animate="visible"
