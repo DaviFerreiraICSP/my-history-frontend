@@ -783,7 +783,6 @@ button {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #6b7280;
   line-height: 1.2;
 }
 
@@ -813,6 +812,24 @@ button {
   cursor: pointer;
   margin-top: 0.2rem;
   letter-spacing: 0.01em;
+}
+
+.marker-preview-wonder {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.97) 0%, rgba(255, 248, 220, 0.97) 100%);
+  border: 1.5px solid rgba(234, 179, 8, 0.5);
+  animation: wonderGlow 2.4s ease-in-out infinite;
+}
+
+.marker-preview-wonder .marker-preview-name {
+  background: linear-gradient(135deg, #92400e, #D97706, #FCD34D, #B45309);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes wonderGlow {
+  0%, 100% { box-shadow: 0 8px 32px rgba(234, 179, 8, 0.22), 0 2px 8px rgba(0, 0, 0, 0.08); }
+  50%       { box-shadow: 0 8px 40px rgba(234, 179, 8, 0.55), 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 18px rgba(252, 211, 77, 0.35); }
 }
 
 /* ─── Story Panel ───────────────────────────────────────────────── */

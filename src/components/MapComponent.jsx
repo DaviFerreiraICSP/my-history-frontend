@@ -4,7 +4,7 @@ import MarkerClusterGroup from 'react-leaflet-cluster';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { motion } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Sparkles } from 'lucide-react';
 import { useT } from '../i18n';
 import { renderToString } from 'react-dom/server';
 import { Castle, Shield, Landmark, Church, MapPin, Heart, Pickaxe, Map as MapIcon, Swords, Train, Building, Building2, GraduationCap, Milestone, Drama, Crown, Flag } from 'lucide-react';
@@ -247,10 +247,11 @@ function MapComponent({ pins, onPinClick, userPosition, externalCenter, onOpenSt
                   const color   = TYPE_COLORS[pin.type] || TYPE_COLORS.historical_landmark;
                   const TypeIcon = TYPE_ICONS[pin.type] || TYPE_ICONS.historical_landmark;
                   const label   = t.typeLabels[pin.type] || t.typeLabels.historical_landmark;
+                  const isWonder = pin.type === 'wonder';
                   return (
                     <motion.div
                       layoutId={isMobileDevice ? undefined : `story-card-${pin.id}`}
-                      className="marker-preview-card"
+                      className={`marker-preview-card${isWonder ? ' marker-preview-wonder' : ''}`}
                       initial={{ scale: 0.82, opacity: 0, y: 10 }}
                       animate={{ scale: 1,    opacity: 1, y: 0  }}
                       transition={{ type: 'spring', stiffness: 380, damping: 26 }}
@@ -259,12 +260,18 @@ function MapComponent({ pins, onPinClick, userPosition, externalCenter, onOpenSt
                         <div className="marker-preview-icon" style={{ background: `${color}1a`, color }}>
                           <TypeIcon size={15} strokeWidth={2} />
                         </div>
-                        <span className="marker-preview-type">{label}</span>
+                        <span className="marker-preview-type" style={{ color }}>
+                          {isWonder && <Sparkles size={10} style={{ display: 'inline', marginRight: 3, verticalAlign: 'middle' }} />}
+                          {label}
+                        </span>
                       </div>
                       <h3 className="marker-preview-name">{pin.name}</h3>
                       <motion.button
                         className="marker-preview-open"
-                        style={{ background: `linear-gradient(135deg, ${color}, ${color}cc)` }}
+                        style={isWonder
+                          ? { background: 'linear-gradient(135deg, #FCD34D, #B45309)' }
+                          : { background: `linear-gradient(135deg, ${color}, ${color}cc)` }
+                        }
                         onClick={(e) => { e.stopPropagation(); if (onOpenStory) onOpenStory(pin); }}
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.96 }}
