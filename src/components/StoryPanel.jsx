@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, ImageOff, ExternalLink, WifiOff, RotateCcw } from 'lucide-react';
-import { TYPE_COLORS, TYPE_ICONS } from './MapComponent';
+import { X, Sparkles, ImageOff, ExternalLink, WifiOff, RotateCcw, Crown } from 'lucide-react';
 
 const reveal = {
   hidden:  { opacity: 0, y: 14 },
@@ -20,8 +19,6 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
   const photoUrl  = typeof story === 'object' ? story?.photo : null;
   const wikiUrl   = typeof story === 'object' ? story?.wikiUrl : null;
 
-  const color    = TYPE_COLORS[selectedPlace?.type] || TYPE_COLORS.historical_landmark;
-  const TypeIcon = TYPE_ICONS[selectedPlace?.type]  || TYPE_ICONS.historical_landmark;
   const isWonder = selectedPlace?.type === 'wonder';
 
   const [imgStatus, setImgStatus] = useState('idle');
@@ -57,7 +54,6 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
         >
           {/* Hero image */}
           <div className="story-hero">
-            {/* Drag handle — floats over image on mobile */}
             <div className="story-drag-handle" />
             {photoUrl ? (
               <>
@@ -82,7 +78,7 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
               </>
             ) : loading ? (
               <div className="story-hero-placeholder">
-                <Sparkles size={40} style={{ color: isWonder ? '#F59E0B' : color, animation: 'sparkleFloat 2s ease-in-out infinite' }} />
+                <Sparkles size={40} style={{ color: '#c4b5fd', animation: 'sparkleFloat 2s ease-in-out infinite' }} />
               </div>
             ) : (
               <div className="story-hero-placeholder story-hero-no-img">
@@ -103,6 +99,19 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
             </motion.button>
           </div>
 
+          {/* Wonder banner — shown only for world wonders */}
+          {isWonder && !loading && (
+            <motion.div
+              className="story-wonder-banner"
+              variants={reveal}
+              initial="hidden"
+              animate="visible"
+            >
+              <Crown size={13} strokeWidth={2.5} />
+              <span>Maravilha do Mundo</span>
+              <Sparkles size={11} strokeWidth={2} />
+            </motion.div>
+          )}
 
           {/* Header */}
           <div className="story-header">
@@ -111,7 +120,7 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
             ) : (
               <motion.h2
                 key={selectedPlace?.id + '_title'}
-                className="story-title"
+                className={`story-title${isWonder ? ' story-title-wonder' : ''}`}
                 variants={reveal}
                 initial="hidden"
                 animate="visible"
@@ -120,20 +129,12 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
               </motion.h2>
             )}
             <div className="story-header-meta">
-              <span className="story-type" style={{ color }}>
+              <span className="story-type">
                 {loading ? (
                   <span className="loading-dots">
                     <span /><span /><span />
                   </span>
-                ) : (
-                  <>
-                    {isWonder
-                      ? <Sparkles size={11} style={{ display: 'inline', marginRight: 3, verticalAlign: 'middle' }} />
-                      : <TypeIcon  size={11} style={{ display: 'inline', marginRight: 3, verticalAlign: 'middle' }} />
-                    }
-                    {typeLabel}
-                  </>
-                )}
+                ) : typeLabel}
               </span>
               {!loading && wikiUrl && (
                 <motion.a
@@ -142,7 +143,6 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
                   target="_blank"
                   rel="noopener noreferrer"
                   className="story-wiki-top-link"
-                  style={{ color, background: `${color}18`, borderColor: `${color}38` }}
                   variants={reveal}
                   initial="hidden"
                   animate="visible"

@@ -855,16 +855,38 @@ button {
 }
 
 .story-panel-wonder {
-  border-top: 1.5px solid rgba(234, 179, 8, 0.35);
-  box-shadow: 0 -8px 40px rgba(234, 179, 8, 0.18), 0 -2px 12px rgba(0, 0, 0, 0.08);
+  border-top: 1.5px solid rgba(234, 179, 8, 0.4);
+  box-shadow: 0 -8px 40px rgba(234, 179, 8, 0.2), 0 -2px 12px rgba(0, 0, 0, 0.08);
 }
 
 .story-panel-wonder .story-hero-placeholder:not(.story-hero-no-img) {
   background: linear-gradient(135deg, #fef3c7 0%, #fde68a 60%, #fbbf24 100%);
 }
 
-.story-panel-wonder .story-title {
-  background: linear-gradient(135deg, #92400e, #D97706, #FCD34D, #B45309);
+.story-wonder-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1.25rem;
+  background: linear-gradient(90deg, #FCD34D22, #D9770622, #FCD34D22);
+  background-size: 200% 100%;
+  animation: wonderBannerShimmer 3s ease-in-out infinite;
+  color: #92400e;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(234, 179, 8, 0.2);
+}
+
+@keyframes wonderBannerShimmer {
+  0%, 100% { background-position: 0% 0; }
+  50%       { background-position: 100% 0; }
+}
+
+.story-title-wonder {
+  background: linear-gradient(135deg, #92400e 0%, #D97706 40%, #FCD34D 65%, #B45309 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1002,8 +1024,7 @@ button {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  display: flex;
-  align-items: center;
+  color: #8B5CF6;
 }
 
 .story-wiki-top-link {
@@ -1012,13 +1033,15 @@ button {
   gap: 0.3rem;
   font-size: clamp(0.6rem, 1.2vw, 0.72rem);
   font-weight: 600;
+  color: #6d28d9;
   text-decoration: none;
   padding: 0.2rem 0.55rem;
   border-radius: 999px;
-  border: 1px solid transparent;
-  transition: opacity 0.15s ease;
+  background: #ede9fe;
+  border: 1px solid #ddd6fe;
+  transition: background 0.15s ease;
 }
-.story-wiki-top-link:hover { opacity: 0.78; }
+.story-wiki-top-link:hover { background: #ddd6fe; }
 
 .story-body {
   flex: 1;
@@ -1840,11 +1863,14 @@ button {
   background-size: 200% 100%;
 }
 .dark .story-title { color: #e2e8f0; }
+.dark .story-type { color: #a78bfa; }
+.dark .story-wiki-top-link {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.3);
+  color: #a78bfa;
+}
 .dark .story-panel-wonder .story-title {
-  background: linear-gradient(135deg, #FCD34D, #F59E0B, #FCD34D);
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 .dark .story-paragraph { color: #cbd5e1; }
 .dark .story-empty { color: #475569; }
