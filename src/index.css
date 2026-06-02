@@ -1726,6 +1726,7 @@ button {
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
+  transition: background 0.2s ease;
 }
 
 /* ─── Dark Mode ──────────────────────────────────────────────────────────── */

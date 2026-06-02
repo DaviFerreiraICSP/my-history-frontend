@@ -328,22 +328,42 @@ function App() {
           {Object.keys(TYPE_COLORS).map((type) => {
             const hidden = hiddenTypes.has(type);
             return (
-              <button
+              <motion.button
                 key={type}
                 className={`settings-type-chip ${hidden ? 'is-hidden' : ''}`}
                 onClick={() => toggleType(type)}
+                whileTap={{ scale: 0.82 }}
+                animate={hidden ? { x: [0, -4, 3, -2, 0] } : { x: 0 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 18 }}
               >
                 <span className="settings-type-dot" style={{ background: hidden ? '#d1d5db' : TYPE_COLORS[type] }} />
                 {t.typeLabels?.[type] || type}
-              </button>
+              </motion.button>
             );
           })}
         </div>
-        {hiddenTypes.size > 0 && (
-          <button className="filters-clear-btn" onClick={clearFilters} style={{ marginTop: 12, width: '100%' }}>
-            {t.clearFilters} ({hiddenTypes.size})
-          </button>
-        )}
+        <AnimatePresence>
+          {hiddenTypes.size > 0 && (
+            <motion.div
+              initial={false}
+              animate={{ height: 'auto', opacity: 1, marginTop: 12 }}
+              exit={{ height: 0, opacity: 0, marginTop: 0 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 30 }}
+              style={{ overflow: 'hidden' }}
+            >
+              <motion.button
+                className="filters-clear-btn"
+                onClick={clearFilters}
+                style={{ width: '100%' }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 18 }}
+              >
+                {t.clearFilters} ({hiddenTypes.size})
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <div className="settings-bottom-actions">
