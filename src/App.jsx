@@ -102,6 +102,7 @@ function App() {
   const [storyError, setStoryError] = useState(false);
   const [loadingStory, setLoadingStory] = useState(false);
   const [loadingNearby, setLoadingNearby] = useState(false);
+  const storyAbortRef = useRef(null);
   const [mapCenter, setMapCenter] = useState(null);
   const [userPosition, setUserPosition] = useState(null);
   const [locating, setLocating] = useState(false);
@@ -232,16 +233,22 @@ function App() {
   }, [fetchNearby]);
 
   const fetchStory = useCallback(async (pin) => {
+    if (storyAbortRef.current) storyAbortRef.current.abort();
+    const controller = new AbortController();
+    storyAbortRef.current = controller;
+
     setSelectedPlace(pin);
     setLoadingStory(true);
     setStory(null);
     setStoryError(false);
     try {
       const res = await axios.get(`${API_BASE}/history/story`, {
-        params: { name: pin.name, lat: pin.lat, lon: pin.lon, lang, aiGuide }
+        params: { name: pin.name, lat: pin.lat, lon: pin.lon, lang, aiGuide },
+        signal: controller.signal,
       });
       setStory({ text: res.data.story, photo: res.data.photoUrl, wikiUrl: res.data.wikiUrl });
     } catch (err) {
+      if (axios.isCancel(err)) return;
       console.error('Error fetching story', err);
       setStoryError(true);
     } finally {
@@ -488,7 +495,13 @@ function App() {
         loading={loadingStory}
         error={storyError}
         onRetry={() => selectedPlace && fetchStory(selectedPlace)}
-        onClose={() => { setSelectedPlace(null); setStory(null); setStoryError(false); }}
+        onClose={() => {
+          if (storyAbortRef.current) storyAbortRef.current.abort();
+          setSelectedPlace(null);
+          setStory(null);
+          setStoryError(false);
+          setLoadingStory(false);
+        }}
         lang={lang}
       />
 

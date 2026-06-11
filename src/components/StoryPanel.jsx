@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import { X, Sparkles, ImageOff, ExternalLink, WifiOff, RotateCcw, Crown } from 'lucide-react';
 
 const reveal = {
@@ -20,6 +20,7 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
   const wikiUrl   = typeof story === 'object' ? story?.wikiUrl : null;
 
   const isWonder = selectedPlace?.type === 'wonder';
+  const dragControls = useDragControls();
 
   const [imgStatus, setImgStatus] = useState('idle');
   useEffect(() => {
@@ -51,9 +52,21 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
           animate={{ y: 0 }}
           exit={{ y: '100%', opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 200, mass: 1 }}
+          drag="y"
+          dragControls={dragControls}
+          dragListener={false}
+          dragConstraints={{ top: 0 }}
+          dragElastic={{ top: 0, bottom: 0.25 }}
+          onDragEnd={(_, info) => {
+            if (info.offset.y > 80 || info.velocity.y > 400) onClose();
+          }}
         >
           {/* Hero image */}
-          <div className="story-hero">
+          <div
+            className="story-hero"
+            onPointerDown={(e) => dragControls.start(e)}
+            style={{ touchAction: 'none' }}
+          >
             <div className="story-drag-handle" />
             {photoUrl ? (
               <>
