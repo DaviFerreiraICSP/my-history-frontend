@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Política de Privacidade — Our History</title>
+  <title>Privacy Policy — Our History</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -24,7 +24,7 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.5rem;
     }
 
     .header img {
@@ -44,6 +44,28 @@
       font-size: 0.8rem;
       color: #9ca3af;
     }
+
+    .lang-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 1.75rem;
+    }
+
+    .lang-btn {
+      padding: 4px 13px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(0,0,0,0.1);
+      background: white;
+      color: #6b7280;
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .lang-btn:hover { border-color: #8B5CF6; color: #8B5CF6; }
+    .lang-btn.active { background: #8B5CF6; border-color: #8B5CF6; color: white; }
 
     .updated {
       display: inline-block;
@@ -68,10 +90,7 @@
       line-height: 1.75;
     }
 
-    ul {
-      padding-left: 1.25rem;
-    }
-
+    ul { padding-left: 1.25rem; }
     li { margin-bottom: 0.25rem; }
 
     .highlight {
@@ -95,45 +114,44 @@
       color: #9ca3af;
       text-align: center;
     }
+
+    .content { display: none; }
+    .content.active { display: block; }
   </style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
 
-    <div class="header">
-      <img src="/logo-black.png" alt="Our History" />
-      <div class="header-text">
-        <h1>Our History</h1>
-        <span>Política de Privacidade</span>
-      </div>
+  <div class="header">
+    <img src="/logo-black.png" alt="Our History" />
+    <div class="header-text">
+      <h1>Our History</h1>
+      <span id="page-subtitle">Política de Privacidade</span>
     </div>
+  </div>
 
-    <span class="updated">Última atualização: maio de 2026</span>
+  <div class="lang-bar">
+    <button class="lang-btn" data-lang="pt-BR">Português</button>
+    <button class="lang-btn" data-lang="en-US">English</button>
+    <button class="lang-btn" data-lang="es-ES">Español</button>
+    <button class="lang-btn" data-lang="fr-FR">Français</button>
+    <button class="lang-btn" data-lang="de-DE">Deutsch</button>
+    <button class="lang-btn" data-lang="zh-CN">中文</button>
+    <button class="lang-btn" data-lang="ja-JP">日本語</button>
+    <button class="lang-btn" data-lang="ru-RU">Русский</button>
+  </div>
 
-    <p>
-      Esta Política de Privacidade descreve como o aplicativo <strong>Our History</strong> coleta,
-      utiliza e protege as informações dos seus usuários. Nosso compromisso é ser completamente
-      transparente: coletamos o mínimo necessário para que o app funcione.
-    </p>
+  <!-- ─── Português ──────────────────────────────────────────────────────── -->
+  <div class="content" id="pt-BR">
+    <span class="updated">Última atualização: junho de 2026</span>
+    <p>Esta Política de Privacidade descreve como o aplicativo <strong>Our History</strong> coleta, utiliza e protege as informações dos seus usuários. Nosso compromisso é ser completamente transparente: coletamos o mínimo necessário para que o app funcione.</p>
 
     <h2>1. Dados coletados</h2>
-    <p>O Our History coleta apenas os seguintes dados durante o uso:</p>
     <ul>
-      <li>
-        <strong>Localização GPS</strong> — utilizada exclusivamente para encontrar locais históricos
-        próximos a você. A localização <em>não é armazenada</em> em nenhum servidor e é descartada
-        ao final de cada busca.
-      </li>
-      <li>
-        <strong>Preferências do dispositivo</strong> — idioma, tema visual e modo do guia de IA são
-        salvos localmente no seu dispositivo (localStorage). Esses dados nunca saem do seu aparelho.
-      </li>
+      <li><strong>Localização GPS</strong> — utilizada exclusivamente para encontrar locais históricos próximos. A localização <em>não é armazenada</em> em nenhum servidor e é descartada ao final de cada busca.</li>
+      <li><strong>Preferências do dispositivo</strong> — idioma, tema visual e modo do guia de IA são salvos localmente no seu dispositivo (localStorage). Esses dados nunca saem do seu aparelho.</li>
     </ul>
-
-    <div class="highlight">
-      O Our History <strong>não exige cadastro</strong>, não cria contas de usuário e não coleta
-      nenhum dado pessoal identificável como nome, e-mail ou número de telefone.
-    </div>
+    <div class="highlight">O Our History <strong>não exige cadastro</strong>, não cria contas de usuário e não coleta nenhum dado pessoal identificável como nome, e-mail ou número de telefone.</div>
 
     <h2>2. Dados NÃO coletados</h2>
     <ul>
@@ -144,50 +162,350 @@
     </ul>
 
     <h2>3. Serviços de terceiros</h2>
-    <p>O app utiliza os seguintes serviços externos para funcionar:</p>
     <ul>
-      <li>
-        <strong>Wikipedia API</strong> — para buscar locais históricos próximos. Apenas as
-        coordenadas geográficas são enviadas.
-      </li>
-      <li>
-        <strong>Google Gemini AI</strong> — para gerar as narrativas históricas. São enviados:
-        nome do local, coordenadas e idioma selecionado. Nenhum dado pessoal é transmitido.
-      </li>
-      <li>
-        <strong>CartoDB / OpenStreetMap</strong> — para renderizar os tiles do mapa. O uso segue
-        as políticas de privacidade dessas plataformas.
-      </li>
+      <li><strong>Wikipedia API</strong> — para buscar locais históricos próximos. Apenas coordenadas geográficas são enviadas.</li>
+      <li><strong>Google Gemini AI</strong> — para gerar narrativas históricas. São enviados: nome do local, coordenadas e idioma. Nenhum dado pessoal é transmitido. Veja a <a href="https://policies.google.com/privacy" target="_blank">política do Google</a>.</li>
+      <li><strong>CartoDB / OpenStreetMap</strong> — para renderizar o mapa.</li>
+      <li><strong>Vercel</strong> — hospedagem do app. Pode registrar logs de acesso padrão.</li>
     </ul>
 
     <h2>4. Segurança</h2>
-    <p>
-      Todas as comunicações entre o app e os servidores são realizadas via HTTPS. Como não
-      armazenamos dados pessoais, o risco de vazamento de informações dos usuários é mínimo.
-    </p>
+    <p>Todas as comunicações entre o app e os servidores são realizadas via HTTPS. Como não armazenamos dados pessoais, o risco de vazamento é mínimo.</p>
 
     <h2>5. Menores de idade</h2>
-    <p>
-      O Our History não coleta dados de nenhum usuário, independentemente da idade.
-      O app é adequado para todas as idades.
-    </p>
+    <p>O Our History não coleta dados de nenhum usuário, independentemente da idade. O app é adequado para todas as idades.</p>
 
     <h2>6. Alterações nesta política</h2>
-    <p>
-      Caso esta política seja atualizada, a data de "Última atualização" será modificada.
-      Recomendamos verificar esta página periodicamente.
-    </p>
+    <p>Caso esta política seja atualizada, a data de "Última atualização" será modificada. Recomendamos verificar esta página periodicamente.</p>
 
     <h2>7. Contato</h2>
-    <p>
-      Dúvidas ou solicitações relacionadas à privacidade podem ser enviadas para:<br />
-      <a href="mailto:davi.ferreira@longview.com.br">davi.ferreira@longview.com.br</a>
-    </p>
-
-    <div class="footer">
-      &copy; 2026 Our History · Davi Ferreira · Todos os direitos reservados
-    </div>
-
+    <p>Dúvidas ou solicitações relacionadas à privacidade: <a href="mailto:davi.ferreira@longview.com.br">davi.ferreira@longview.com.br</a></p>
   </div>
+
+  <!-- ─── English ───────────────────────────────────────────────────────── -->
+  <div class="content" id="en-US">
+    <span class="updated">Last updated: June 2026</span>
+    <p>This Privacy Policy describes how the <strong>Our History</strong> app collects, uses, and protects user information. Our commitment is full transparency: we collect only the minimum necessary for the app to function.</p>
+
+    <h2>1. Data collected</h2>
+    <ul>
+      <li><strong>GPS location</strong> — used exclusively to find nearby historical places. Location is <em>not stored</em> on any server and is discarded after each search.</li>
+      <li><strong>Device preferences</strong> — language, theme, and AI guide mode are saved locally on your device (localStorage). This data never leaves your device.</li>
+    </ul>
+    <div class="highlight">Our History <strong>requires no sign-up</strong>, creates no user accounts, and collects no personally identifiable information such as name, email, or phone number.</div>
+
+    <h2>2. Data we do NOT collect</h2>
+    <ul>
+      <li>Personal information (name, email, phone)</li>
+      <li>Browsing history or behavioral data</li>
+      <li>Tracking cookies</li>
+      <li>Financial data</li>
+    </ul>
+
+    <h2>3. Third-party services</h2>
+    <ul>
+      <li><strong>Wikipedia API</strong> — to find nearby historical places. Only geographic coordinates are sent.</li>
+      <li><strong>Google Gemini AI</strong> — to generate historical narratives. Only the place name, coordinates, and language are sent. No personal data is transmitted. See <a href="https://policies.google.com/privacy" target="_blank">Google's privacy policy</a>.</li>
+      <li><strong>CartoDB / OpenStreetMap</strong> — to render the map.</li>
+      <li><strong>Vercel</strong> — app hosting. May log standard access logs.</li>
+    </ul>
+
+    <h2>4. Security</h2>
+    <p>All communication between the app and servers is conducted over HTTPS. Because we do not store personal data, the risk of information leakage is minimal.</p>
+
+    <h2>5. Minors</h2>
+    <p>Our History does not collect data from any user, regardless of age. The app is suitable for all ages.</p>
+
+    <h2>6. Changes to this policy</h2>
+    <p>If this policy is updated, the "Last updated" date will be changed. We recommend checking this page periodically.</p>
+
+    <h2>7. Contact</h2>
+    <p>Privacy questions or requests: <a href="mailto:davi.ferreira@longview.com.br">davi.ferreira@longview.com.br</a></p>
+  </div>
+
+  <!-- ─── Español ───────────────────────────────────────────────────────── -->
+  <div class="content" id="es-ES">
+    <span class="updated">Última actualización: junio de 2026</span>
+    <p>Esta Política de Privacidad describe cómo la aplicación <strong>Our History</strong> recopila, utiliza y protege la información de sus usuarios. Nuestro compromiso es la transparencia total: recopilamos solo lo mínimo necesario para que la app funcione.</p>
+
+    <h2>1. Datos recopilados</h2>
+    <ul>
+      <li><strong>Ubicación GPS</strong> — usada exclusivamente para encontrar lugares históricos cercanos. La ubicación <em>no se almacena</em> en ningún servidor y se descarta al final de cada búsqueda.</li>
+      <li><strong>Preferencias del dispositivo</strong> — idioma, tema visual y modo de guía IA se guardan localmente en tu dispositivo (localStorage). Estos datos nunca salen de tu aparato.</li>
+    </ul>
+    <div class="highlight">Our History <strong>no requiere registro</strong>, no crea cuentas de usuario y no recopila ningún dato personal identificable como nombre, correo electrónico o número de teléfono.</div>
+
+    <h2>2. Datos que NO recopilamos</h2>
+    <ul>
+      <li>Información personal (nombre, correo, teléfono)</li>
+      <li>Historial de navegación o comportamiento</li>
+      <li>Cookies de seguimiento</li>
+      <li>Datos financieros</li>
+    </ul>
+
+    <h2>3. Servicios de terceros</h2>
+    <ul>
+      <li><strong>Wikipedia API</strong> — para buscar lugares históricos cercanos. Solo se envían coordenadas geográficas.</li>
+      <li><strong>Google Gemini AI</strong> — para generar narrativas históricas. Se envían: nombre del lugar, coordenadas e idioma. No se transmite ningún dato personal. Ver <a href="https://policies.google.com/privacy" target="_blank">política de Google</a>.</li>
+      <li><strong>CartoDB / OpenStreetMap</strong> — para renderizar el mapa.</li>
+      <li><strong>Vercel</strong> — alojamiento de la app. Puede registrar logs de acceso estándar.</li>
+    </ul>
+
+    <h2>4. Seguridad</h2>
+    <p>Todas las comunicaciones entre la app y los servidores se realizan mediante HTTPS. Como no almacenamos datos personales, el riesgo de filtración es mínimo.</p>
+
+    <h2>5. Menores de edad</h2>
+    <p>Our History no recopila datos de ningún usuario, independientemente de la edad. La app es adecuada para todas las edades.</p>
+
+    <h2>6. Cambios en esta política</h2>
+    <p>Si esta política se actualiza, se modificará la fecha de "Última actualización". Recomendamos revisar esta página periódicamente.</p>
+
+    <h2>7. Contacto</h2>
+    <p>Preguntas o solicitudes relacionadas con la privacidad: <a href="mailto:davi.ferreira@longview.com.br">davi.ferreira@longview.com.br</a></p>
+  </div>
+
+  <!-- ─── Français ──────────────────────────────────────────────────────── -->
+  <div class="content" id="fr-FR">
+    <span class="updated">Dernière mise à jour : juin 2026</span>
+    <p>Cette Politique de confidentialité décrit comment l'application <strong>Our History</strong> collecte, utilise et protège les informations de ses utilisateurs. Notre engagement est la transparence totale : nous collectons uniquement le minimum nécessaire au fonctionnement de l'application.</p>
+
+    <h2>1. Données collectées</h2>
+    <ul>
+      <li><strong>Localisation GPS</strong> — utilisée exclusivement pour trouver les lieux historiques proches. La localisation <em>n'est pas stockée</em> sur nos serveurs et est supprimée après chaque recherche.</li>
+      <li><strong>Préférences de l'appareil</strong> — langue, thème visuel et mode du guide IA sont enregistrés localement sur votre appareil (localStorage). Ces données ne quittent jamais votre appareil.</li>
+    </ul>
+    <div class="highlight">Our History <strong>ne nécessite aucune inscription</strong>, ne crée pas de comptes utilisateur et ne collecte aucune donnée personnelle identifiable comme le nom, l'e-mail ou le numéro de téléphone.</div>
+
+    <h2>2. Données que nous ne collectons PAS</h2>
+    <ul>
+      <li>Informations personnelles (nom, e-mail, téléphone)</li>
+      <li>Historique de navigation ou comportement</li>
+      <li>Cookies de suivi</li>
+      <li>Données financières</li>
+    </ul>
+
+    <h2>3. Services tiers</h2>
+    <ul>
+      <li><strong>API Wikipedia</strong> — pour rechercher des lieux historiques proches. Seules les coordonnées géographiques sont envoyées.</li>
+      <li><strong>Google Gemini AI</strong> — pour générer des récits historiques. Sont envoyés : le nom du lieu, les coordonnées et la langue. Aucune donnée personnelle n'est transmise. Voir la <a href="https://policies.google.com/privacy" target="_blank">politique de confidentialité de Google</a>.</li>
+      <li><strong>CartoDB / OpenStreetMap</strong> — pour afficher la carte.</li>
+      <li><strong>Vercel</strong> — hébergement de l'application. Peut enregistrer des journaux d'accès standard.</li>
+    </ul>
+
+    <h2>4. Sécurité</h2>
+    <p>Toutes les communications entre l'application et les serveurs sont effectuées via HTTPS. Comme nous ne stockons pas de données personnelles, le risque de fuite d'informations est minimal.</p>
+
+    <h2>5. Mineurs</h2>
+    <p>Our History ne collecte les données d'aucun utilisateur, quel que soit son âge. L'application convient à tous les âges.</p>
+
+    <h2>6. Modifications de cette politique</h2>
+    <p>Si cette politique est mise à jour, la date de « Dernière mise à jour » sera modifiée. Nous recommandons de consulter cette page périodiquement.</p>
+
+    <h2>7. Contact</h2>
+    <p>Questions ou demandes relatives à la confidentialité : <a href="mailto:davi.ferreira@longview.com.br">davi.ferreira@longview.com.br</a></p>
+  </div>
+
+  <!-- ─── Deutsch ───────────────────────────────────────────────────────── -->
+  <div class="content" id="de-DE">
+    <span class="updated">Zuletzt aktualisiert: Juni 2026</span>
+    <p>Diese Datenschutzrichtlinie beschreibt, wie die App <strong>Our History</strong> Nutzerinformationen sammelt, verwendet und schützt. Unser Ziel ist vollständige Transparenz: Wir sammeln nur das Minimum, das für den Betrieb der App erforderlich ist.</p>
+
+    <h2>1. Gesammelte Daten</h2>
+    <ul>
+      <li><strong>GPS-Standort</strong> — wird ausschließlich zur Suche nach nahegelegenen historischen Orten verwendet. Der Standort wird <em>nicht auf Servern gespeichert</em> und nach jeder Suche verworfen.</li>
+      <li><strong>Geräteeinstellungen</strong> — Sprache, Design und KI-Führermodus werden lokal auf deinem Gerät gespeichert (localStorage). Diese Daten verlassen dein Gerät nie.</li>
+    </ul>
+    <div class="highlight">Our History <strong>erfordert keine Registrierung</strong>, erstellt keine Benutzerkonten und sammelt keine personenbezogenen Daten wie Name, E-Mail oder Telefonnummer.</div>
+
+    <h2>2. Daten, die wir NICHT sammeln</h2>
+    <ul>
+      <li>Persönliche Informationen (Name, E-Mail, Telefon)</li>
+      <li>Browsing-Verlauf oder Verhaltensdaten</li>
+      <li>Tracking-Cookies</li>
+      <li>Finanzdaten</li>
+    </ul>
+
+    <h2>3. Drittanbieter-Dienste</h2>
+    <ul>
+      <li><strong>Wikipedia API</strong> — zur Suche nach nahegelegenen historischen Orten. Es werden nur geografische Koordinaten gesendet.</li>
+      <li><strong>Google Gemini AI</strong> — zur Generierung historischer Erzählungen. Gesendet werden: Ortsname, Koordinaten und Sprache. Es werden keine personenbezogenen Daten übertragen. Siehe <a href="https://policies.google.com/privacy" target="_blank">Googles Datenschutzrichtlinie</a>.</li>
+      <li><strong>CartoDB / OpenStreetMap</strong> — zur Kartendarstellung.</li>
+      <li><strong>Vercel</strong> — App-Hosting. Kann Standard-Zugriffsprotokolle aufzeichnen.</li>
+    </ul>
+
+    <h2>4. Sicherheit</h2>
+    <p>Die gesamte Kommunikation zwischen der App und den Servern erfolgt über HTTPS. Da wir keine personenbezogenen Daten speichern, ist das Risiko eines Datenlecks minimal.</p>
+
+    <h2>5. Minderjährige</h2>
+    <p>Our History sammelt keine Daten von Nutzern, unabhängig vom Alter. Die App ist für alle Altersgruppen geeignet.</p>
+
+    <h2>6. Änderungen dieser Richtlinie</h2>
+    <p>Wenn diese Richtlinie aktualisiert wird, wird das Datum „Zuletzt aktualisiert" geändert. Wir empfehlen, diese Seite regelmäßig zu überprüfen.</p>
+
+    <h2>7. Kontakt</h2>
+    <p>Datenschutzfragen oder -anfragen: <a href="mailto:davi.ferreira@longview.com.br">davi.ferreira@longview.com.br</a></p>
+  </div>
+
+  <!-- ─── 中文 ──────────────────────────────────────────────────────────── -->
+  <div class="content" id="zh-CN">
+    <span class="updated">最后更新：2026年6月</span>
+    <p>本隐私政策说明 <strong>Our History</strong> 应用如何收集、使用和保护用户信息。我们的承诺是完全透明：我们仅收集应用运行所需的最少数据。</p>
+
+    <h2>1. 收集的数据</h2>
+    <ul>
+      <li><strong>GPS位置</strong> — 仅用于查找附近的历史地点。位置信息<em>不存储在任何服务器上</em>，每次搜索结束后即丢弃。</li>
+      <li><strong>设备偏好设置</strong> — 语言、视觉主题和AI导游模式保存在您设备的本地存储中（localStorage），这些数据不会离开您的设备。</li>
+    </ul>
+    <div class="highlight">Our History <strong>无需注册</strong>，不创建用户账户，不收集任何个人身份信息，如姓名、电子邮件或电话号码。</div>
+
+    <h2>2. 我们不收集的数据</h2>
+    <ul>
+      <li>个人信息（姓名、电子邮件、电话）</li>
+      <li>浏览历史或行为数据</li>
+      <li>跟踪Cookie</li>
+      <li>财务数据</li>
+    </ul>
+
+    <h2>3. 第三方服务</h2>
+    <ul>
+      <li><strong>Wikipedia API</strong> — 用于查找附近历史地点，仅发送地理坐标。</li>
+      <li><strong>Google Gemini AI</strong> — 用于生成历史叙述，仅发送地点名称、坐标和语言，不传输任何个人数据。请参阅 <a href="https://policies.google.com/privacy" target="_blank">Google隐私政策</a>。</li>
+      <li><strong>CartoDB / OpenStreetMap</strong> — 用于渲染地图。</li>
+      <li><strong>Vercel</strong> — 应用托管，可能记录标准访问日志。</li>
+    </ul>
+
+    <h2>4. 安全性</h2>
+    <p>应用与服务器之间的所有通信均通过HTTPS进行。由于我们不存储个人数据，信息泄露的风险极低。</p>
+
+    <h2>5. 未成年人</h2>
+    <p>Our History不收集任何用户的数据，无论年龄大小。本应用适合所有年龄段。</p>
+
+    <h2>6. 政策变更</h2>
+    <p>如本政策有更新，"最后更新"日期将相应修改。建议定期查看本页面。</p>
+
+    <h2>7. 联系我们</h2>
+    <p>隐私相关问题或请求：<a href="mailto:davi.ferreira@longview.com.br">davi.ferreira@longview.com.br</a></p>
+  </div>
+
+  <!-- ─── 日本語 ─────────────────────────────────────────────────────────── -->
+  <div class="content" id="ja-JP">
+    <span class="updated">最終更新：2026年6月</span>
+    <p>このプライバシーポリシーは、<strong>Our History</strong> アプリがユーザー情報をどのように収集、使用、保護するかを説明します。私たちは完全な透明性を約束します：アプリの動作に必要な最小限のデータのみ収集します。</p>
+
+    <h2>1. 収集するデータ</h2>
+    <ul>
+      <li><strong>GPS位置情報</strong> — 近くの歴史的な場所を見つけるためだけに使用します。位置情報は<em>サーバーに保存されず</em>、各検索の後に破棄されます。</li>
+      <li><strong>デバイスの設定</strong> — 言語、テーマ、AIガイドモードはデバイスのローカルストレージ（localStorage）に保存されます。このデータがデバイスの外に出ることはありません。</li>
+    </ul>
+    <div class="highlight">Our History は<strong>登録不要</strong>で、ユーザーアカウントを作成せず、名前・メールアドレス・電話番号などの個人を特定できる情報を一切収集しません。</div>
+
+    <h2>2. 収集しないデータ</h2>
+    <ul>
+      <li>個人情報（名前、メール、電話番号）</li>
+      <li>閲覧履歴や行動データ</li>
+      <li>トラッキングCookie</li>
+      <li>財務データ</li>
+    </ul>
+
+    <h2>3. 第三者サービス</h2>
+    <ul>
+      <li><strong>Wikipedia API</strong> — 近くの歴史的な場所を検索するために使用します。地理的な座標のみが送信されます。</li>
+      <li><strong>Google Gemini AI</strong> — 歴史的なナレーションを生成するために使用します。送信されるのは場所の名前、座標、言語のみで、個人データは一切送信されません。<a href="https://policies.google.com/privacy" target="_blank">Googleのプライバシーポリシー</a>をご覧ください。</li>
+      <li><strong>CartoDB / OpenStreetMap</strong> — 地図の表示に使用します。</li>
+      <li><strong>Vercel</strong> — アプリのホスティング。標準的なアクセスログを記録する場合があります。</li>
+    </ul>
+
+    <h2>4. セキュリティ</h2>
+    <p>アプリとサーバー間のすべての通信はHTTPSで行われます。個人データを保存していないため、情報漏洩のリスクは最小限です。</p>
+
+    <h2>5. 未成年者</h2>
+    <p>Our History はすべてのユーザーのデータを収集せず、年齢に関係なく使用できます。すべての年齢層に適しています。</p>
+
+    <h2>6. ポリシーの変更</h2>
+    <p>このポリシーが更新された場合、「最終更新」日が変更されます。定期的にこのページを確認することをお勧めします。</p>
+
+    <h2>7. お問い合わせ</h2>
+    <p>プライバシーに関するご質問やお問い合わせ：<a href="mailto:davi.ferreira@longview.com.br">davi.ferreira@longview.com.br</a></p>
+  </div>
+
+  <!-- ─── Русский ───────────────────────────────────────────────────────── -->
+  <div class="content" id="ru-RU">
+    <span class="updated">Последнее обновление: июнь 2026 г.</span>
+    <p>Настоящая Политика конфиденциальности описывает, как приложение <strong>Our History</strong> собирает, использует и защищает информацию пользователей. Наша цель — полная прозрачность: мы собираем только минимум данных, необходимых для работы приложения.</p>
+
+    <h2>1. Собираемые данные</h2>
+    <ul>
+      <li><strong>GPS-местоположение</strong> — используется исключительно для поиска ближайших исторических мест. Местоположение <em>не сохраняется</em> ни на каких серверах и удаляется после каждого поиска.</li>
+      <li><strong>Настройки устройства</strong> — язык, визуальная тема и режим гида ИИ сохраняются локально на вашем устройстве (localStorage). Эти данные никогда не покидают ваше устройство.</li>
+    </ul>
+    <div class="highlight">Our History <strong>не требует регистрации</strong>, не создаёт учётные записи и не собирает никаких личных данных, таких как имя, электронная почта или номер телефона.</div>
+
+    <h2>2. Данные, которые мы НЕ собираем</h2>
+    <ul>
+      <li>Личная информация (имя, e-mail, телефон)</li>
+      <li>История просмотров или поведенческие данные</li>
+      <li>Отслеживающие файлы cookie</li>
+      <li>Финансовые данные</li>
+    </ul>
+
+    <h2>3. Сторонние сервисы</h2>
+    <ul>
+      <li><strong>Wikipedia API</strong> — для поиска ближайших исторических мест. Отправляются только географические координаты.</li>
+      <li><strong>Google Gemini AI</strong> — для генерации исторических рассказов. Отправляются: название места, координаты и язык. Личные данные не передаются. См. <a href="https://policies.google.com/privacy" target="_blank">политику конфиденциальности Google</a>.</li>
+      <li><strong>CartoDB / OpenStreetMap</strong> — для отображения карты.</li>
+      <li><strong>Vercel</strong> — хостинг приложения. Может вести стандартные журналы доступа.</li>
+    </ul>
+
+    <h2>4. Безопасность</h2>
+    <p>Все коммуникации между приложением и серверами осуществляются по протоколу HTTPS. Поскольку мы не храним личные данные, риск утечки информации минимален.</p>
+
+    <h2>5. Несовершеннолетние</h2>
+    <p>Our History не собирает данные ни одного пользователя, независимо от возраста. Приложение подходит для всех возрастных групп.</p>
+
+    <h2>6. Изменения в политике</h2>
+    <p>В случае обновления политики дата «Последнего обновления» будет изменена. Рекомендуем периодически проверять эту страницу.</p>
+
+    <h2>7. Контакты</h2>
+    <p>Вопросы или запросы, связанные с конфиденциальностью: <a href="mailto:davi.ferreira@longview.com.br">davi.ferreira@longview.com.br</a></p>
+  </div>
+
+  <div class="footer">&copy; 2026 Our History · Davi Ferreira · ourhistory.dev</div>
+
+</div>
+<script>
+  const SUBTITLES = {
+    'pt-BR': 'Política de Privacidade',
+    'en-US': 'Privacy Policy',
+    'es-ES': 'Política de Privacidad',
+    'fr-FR': 'Politique de confidentialité',
+    'de-DE': 'Datenschutzrichtlinie',
+    'zh-CN': '隐私政策',
+    'ja-JP': 'プライバシーポリシー',
+    'ru-RU': 'Политика конфиденциальности',
+  };
+  const LANGS = Object.keys(SUBTITLES);
+
+  function setLang(lang) {
+    LANGS.forEach(l => document.getElementById(l).classList.toggle('active', l === lang));
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    document.getElementById('page-subtitle').textContent = SUBTITLES[lang] || SUBTITLES['en-US'];
+    document.documentElement.lang = lang.split('-')[0];
+    localStorage.setItem('oh-privacy-lang', lang);
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.dataset.lang));
+  });
+
+  const match = (c) => LANGS.find(l => l === c || l.startsWith((c || '').split('-')[0]));
+  const detected =
+    match(new URLSearchParams(location.search).get('lang')) ||
+    match(localStorage.getItem('oh-privacy-lang')) ||
+    match(navigator.language) ||
+    'en-US';
+  setLang(detected);
+</script>
 </body>
 </html>

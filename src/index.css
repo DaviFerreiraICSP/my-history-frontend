@@ -1688,7 +1688,10 @@ button {
   outline: none;
   cursor: pointer;
   font-family: 'Inter', system-ui, sans-serif;
-  max-width: 130px;
+  min-width: 100px;
+  max-width: 140px;
+  text-align: right;
+  text-align-last: right;
 }
 
 .settings-select-light:focus {
