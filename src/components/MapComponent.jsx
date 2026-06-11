@@ -231,7 +231,8 @@ function MapComponent({ pins, onPinClick, userPosition, externalCenter, onOpenSt
           spiderfyOnMaxZoom
           showCoverageOnHover={false}
           iconCreateFunction={createClusterCustomIcon}
-          maxClusterRadius={isMobileDevice ? 60 : 40}
+          maxClusterRadius={isMobileDevice ? 30 : 40}
+          disableClusteringAtZoom={16}
           animate={!isMobileDevice}
           animateAddingMarkers={false}
         >
