@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { Navigation, Compass, Settings, Globe, Bot, X, Sun, Moon } from 'lucide-react';
+import { Navigation, Compass, Settings, Globe, Bot, X, Sun, Moon, Heart, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoBlack from './assets/logo_black.png';
 import logoWhite from './assets/logo_white.png';
@@ -7,6 +7,8 @@ import MapComponent, { TYPE_COLORS } from './components/MapComponent';
 import SearchBar from './components/SearchBar';
 import OnboardingOverlay from './components/OnboardingOverlay';
 import AboutModal from './components/AboutModal';
+import DonationModal from './components/DonationModal';
+import FeedbackModal from './components/FeedbackModal';
 import StoryPanel from './components/StoryPanel';
 import axios from 'axios';
 import { useT } from './i18n';
@@ -117,6 +119,8 @@ function App() {
   const darkMode = theme === 'dark' || theme === 'midnight';
 
   const [showAbout, setShowAbout] = useState(false);
+  const [showDonate, setShowDonate] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const [showOnboarding, setShowOnboarding] = useState(() => {
     try { return !localStorage.getItem('oh-onboarded'); } catch { return true; }
@@ -386,6 +390,22 @@ function App() {
         >
           {t.settingsAbout}
         </button>
+        <button
+          className="settings-onboarding-btn"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
+          onClick={() => { setShowDonate(true); setIsSettingsOpen(false); }}
+        >
+          <Heart size={15} />
+          {t.donateBtn}
+        </button>
+        <button
+          className="settings-onboarding-btn"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
+          onClick={() => { setShowFeedback(true); setIsSettingsOpen(false); }}
+        >
+          <MessageSquare size={15} />
+          {t.feedbackBtn}
+        </button>
       </div>
     </>
   );
@@ -532,6 +552,18 @@ function App() {
       <AnimatePresence>
         {showAbout && (
           <AboutModal onClose={() => setShowAbout(false)} darkMode={darkMode} lang={lang} />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showDonate && (
+          <DonationModal onClose={() => setShowDonate(false)} darkMode={darkMode} lang={lang} />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showFeedback && (
+          <FeedbackModal onClose={() => setShowFeedback(false)} darkMode={darkMode} lang={lang} apiBase={API_BASE} />
         )}
       </AnimatePresence>
     </div>

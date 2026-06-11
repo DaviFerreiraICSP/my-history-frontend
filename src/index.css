@@ -2511,3 +2511,367 @@ button {
   color: #C4B5FD;
 }
 
+/* ─── Donation Modal ───────────────────────────────────────────────────────── */
+
+.donate-modal-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 28px;
+  width: 100%;
+  max-width: 360px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.22);
+}
+
+.donate-modal-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.donate-modal-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(139, 92, 246, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8B5CF6;
+  margin-bottom: 0.25rem;
+}
+
+.donate-modal-title {
+  font-family: 'Geist', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.donate-modal-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: #6B7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.donate-modal-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+}
+
+.donate-modal-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.donate-modal-section-icon {
+  color: #9CA3AF;
+}
+
+.donate-modal-section-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.donate-modal-qr {
+  padding: 1rem;
+  background: rgba(249, 250, 251, 0.9);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donate-modal-pix-key-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.donate-modal-pix-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #9CA3AF;
+}
+
+.donate-modal-pix-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #374151;
+  font-variant-numeric: tabular-nums;
+}
+
+.donate-modal-copy-btn {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  background: rgba(139, 92, 246, 0.07);
+  color: #7C3AED;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+
+.donate-modal-copy-btn:hover {
+  background: rgba(139, 92, 246, 0.12);
+  border-color: rgba(139, 92, 246, 0.35);
+}
+
+.donate-modal-copy-btn.is-copied {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #059669;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.donate-modal-section--soon {
+  opacity: 0.5;
+  pointer-events: none;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+}
+
+.donate-modal-soon-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #9CA3AF;
+  background: #F3F4F6;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+}
+
+/* Dark mode — Donation */
+.about-overlay.dark .donate-modal-card    { background: #16162a; }
+.about-overlay.dark .donate-modal-title   { color: #F9FAFB; }
+.about-overlay.dark .donate-modal-desc    { color: #9CA3AF; }
+.about-overlay.dark .donate-modal-section-title { color: #D1D5DB; }
+.about-overlay.dark .donate-modal-qr      { background: rgba(31, 31, 56, 0.8); border-color: rgba(255,255,255,0.07); }
+.about-overlay.dark .donate-modal-pix-value { color: #D1D5DB; }
+.about-overlay.dark .donate-modal-copy-btn {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(167, 139, 250, 0.2);
+  color: #A78BFA;
+}
+.about-overlay.dark .donate-modal-copy-btn:hover {
+  background: rgba(139, 92, 246, 0.18);
+  border-color: rgba(167, 139, 250, 0.35);
+  color: #C4B5FD;
+}
+.about-overlay.dark .donate-modal-copy-btn.is-copied {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.25);
+  color: #34D399;
+}
+
+/* ─── Feedback Modal ───────────────────────────────────────────────────────── */
+
+.feedback-modal-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 28px;
+  width: 100%;
+  max-width: 360px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.22);
+}
+
+.feedback-modal-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  text-align: center;
+}
+
+.feedback-modal-title {
+  font-family: 'Geist', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.feedback-modal-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: #6B7280;
+  margin: 0;
+}
+
+.feedback-stars {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.feedback-star {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.1rem;
+  color: #D1D5DB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.12s;
+  line-height: 1;
+}
+
+.feedback-star svg {
+  fill: currentColor;
+}
+
+.feedback-star.is-filled {
+  color: #F59E0B;
+}
+
+.feedback-modal-textarea-wrap {
+  width: 100%;
+  position: relative;
+}
+
+.feedback-modal-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(249, 250, 251, 0.9);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: #111827;
+  resize: none;
+  outline: none;
+  transition: border-color 0.18s;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+
+.feedback-modal-textarea:focus {
+  border-color: rgba(139, 92, 246, 0.4);
+}
+
+.feedback-modal-textarea::placeholder {
+  color: #9CA3AF;
+}
+
+.feedback-modal-textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.feedback-modal-chars {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.6rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  color: #9CA3AF;
+  pointer-events: none;
+}
+
+.feedback-modal-status {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+}
+
+.feedback-modal-status--success {
+  color: #059669;
+}
+
+.feedback-modal-status--error {
+  color: #DC2626;
+}
+
+.feedback-modal-submit {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  border: none;
+  background: #8B5CF6;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.18s, opacity 0.18s;
+}
+
+.feedback-modal-submit:hover {
+  background: #7C3AED;
+}
+
+.feedback-modal-submit.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.feedback-modal-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: feedback-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes feedback-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Dark mode — Feedback */
+.about-overlay.dark .feedback-modal-card     { background: #16162a; }
+.about-overlay.dark .feedback-modal-title    { color: #F9FAFB; }
+.about-overlay.dark .feedback-modal-subtitle { color: #9CA3AF; }
+.about-overlay.dark .feedback-star           { color: rgba(255,255,255,0.15); }
+.about-overlay.dark .feedback-star.is-filled { color: #F59E0B; }
+.about-overlay.dark .feedback-modal-textarea {
+  background: rgba(31, 31, 56, 0.8);
+  border-color: rgba(255,255,255,0.08);
+  color: #F9FAFB;
+}
+.about-overlay.dark .feedback-modal-textarea:focus {
+  border-color: rgba(167, 139, 250, 0.4);
+}
+.about-overlay.dark .feedback-modal-textarea::placeholder { color: #4B5563; }
+.about-overlay.dark .feedback-modal-submit { background: #7C3AED; }
+.about-overlay.dark .feedback-modal-submit:hover { background: #6D28D9; }
+
