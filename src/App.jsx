@@ -495,11 +495,20 @@ function App() {
 
       <div className="app-vignette" />
 
-      {loadingNearby && (
-        <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 500, overflow: 'hidden' }}>
-          <div className="scan-sweep" />
-        </div>
-      )}
+      <AnimatePresence>
+        {loadingNearby && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.7, ease: 'easeOut' } }}
+            transition={{ duration: 0.25 }}
+            style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 500 }}
+          >
+            <div className="scan-sweep" />
+            <div className="scan-sweep-echo" />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showOnboarding && (

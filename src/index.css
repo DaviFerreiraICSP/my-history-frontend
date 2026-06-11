@@ -1558,21 +1558,37 @@ button {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 200px;
+  width: 180px;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(139, 92, 246, 0.07) 25%,
-    rgba(139, 92, 246, 0.28) 50%,
-    rgba(139, 92, 246, 0.07) 75%,
+    rgba(139, 92, 246, 0.05) 15%,
+    rgba(139, 92, 246, 0.32) 50%,
+    rgba(139, 92, 246, 0.05) 85%,
     transparent 100%
   );
-  animation: scanSweep 1.6s ease-in-out forwards;
+  animation: scanSweep 2s linear infinite;
+}
+
+.scan-sweep-echo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 92, 246, 0.14) 50%,
+    transparent 100%
+  );
+  animation: scanSweep 2s linear infinite;
+  animation-delay: 0.85s;
 }
 
 @keyframes scanSweep {
   0%   { transform: translateX(-200px); }
-  100% { transform: translateX(100vw); }
+  100% { transform: translateX(110vw); }
 }
 
 /* ─── Expanding Settings Panel (Light Theme) ─────────────────────────── */
