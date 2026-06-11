@@ -173,6 +173,24 @@ const userPin = L.divIcon({
 
 
 
+function MapSizeWatcher() {
+  const map = useMap();
+  useEffect(() => {
+    // Força o Leaflet a recalcular o tamanho após o viewport mobile estabilizar
+    const ids = [
+      setTimeout(() => map.invalidateSize(), 100),
+      setTimeout(() => map.invalidateSize(), 500),
+    ];
+    const ro = new ResizeObserver(() => map.invalidateSize());
+    ro.observe(map.getContainer());
+    return () => {
+      ids.forEach(clearTimeout);
+      ro.disconnect();
+    };
+  }, [map]);
+  return null;
+}
+
 function FlyToLocation({ center }) {
   const map = useMap();
   useEffect(() => {
@@ -222,6 +240,7 @@ function MapComponent({ pins, onPinClick, userPosition, externalCenter, onOpenSt
           maxZoom={19}
         />
 
+        <MapSizeWatcher />
         {userPosition && <Marker position={[userPosition.lat, userPosition.lng]} icon={userPin} zIndexOffset={1000} />}
         <FlyToLocation center={externalCenter} />
         {onMapMove && <MapCenterTracker onMapMove={onMapMove} />}
