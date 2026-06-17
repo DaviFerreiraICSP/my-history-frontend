@@ -39,6 +39,11 @@ function toWikiLang(appLang) {
   return map[appLang] || 'en';
 }
 
+function toApiLang(appLang) {
+  const map = { 'en-US':'en','es-ES':'es','fr-FR':'fr','de-DE':'de','zh-CN':'zh','ja-JP':'ja','ru-RU':'ru' };
+  return map[appLang] || appLang; // pt-BR already matches ALLOWED_LANGS
+}
+
 function cleanWikiTitle(title) {
   return title.replace(/\s*\([^)]+\)\s*$/, '').trim();
 }
@@ -252,7 +257,7 @@ function App() {
     setStoryError(false);
     try {
       const res = await axios.get(`${API_BASE}/history/story`, {
-        params: { name: pin.name, lat: pin.lat, lon: pin.lon, lang, aiGuide },
+        params: { name: pin.name, lat: pin.lat, lon: pin.lon, lang: toApiLang(lang), aiGuide },
         signal: controller.signal,
       });
       setStory({ text: res.data.story, photo: res.data.photoUrl, wikiUrl: res.data.wikiUrl });
