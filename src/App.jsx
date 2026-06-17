@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Navigation, Compass, Settings, Globe, Bot, X, Sun, Moon, Heart, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoBlack from './assets/logo_black.png';
@@ -201,6 +201,11 @@ function App() {
   const handleMapMove = useCallback((center) => {
     viewCenterRef.current = center;
   }, []);
+
+  useEffect(() => {
+    const center = viewCenterRef.current || mapCenter;
+    if (center) fetchNearby(center.lat, center.lng);
+  }, [lang]);
 
   // Only called by button tap — required by iOS Safari for geolocation permission
   const handleGoToUserLocation = () => {
