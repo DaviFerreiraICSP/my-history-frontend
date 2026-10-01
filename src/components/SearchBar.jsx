@@ -20,7 +20,7 @@ export default function SearchBar({ onLocationSelect, lang = 'pt-BR' }) {
     setLoading(true);
     debounceRef.current = setTimeout(async () => {
       try {
-        const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&accept-language=pt-BR`;
+        const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&accept-language=${lang}`;
         const res = await fetch(url, { headers: { 'User-Agent': 'OurHistoryApp/1.0' } });
         const data = await res.json();
         setSuggestions(data.slice(0, 5));
@@ -45,7 +45,7 @@ export default function SearchBar({ onLocationSelect, lang = 'pt-BR' }) {
     setLoading(true);
     setNotFound(false);
     try {
-      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1&accept-language=pt-BR`;
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1&accept-language=${lang}`;
       const res = await fetch(url, { headers: { 'User-Agent': 'OurHistoryApp/1.0' } });
       const data = await res.json();
       if (data.length > 0) selectResult(data[0]);

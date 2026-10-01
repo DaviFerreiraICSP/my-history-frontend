@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Navigation, Compass, Settings, Globe, Bot, X, Sun, Moon, Heart, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoBlack from './assets/logo_black.png';
@@ -37,6 +37,11 @@ function haversineKm(lat1, lon1, lat2, lon2) {
 function toWikiLang(appLang) {
   const map = { 'pt-BR':'pt','es-ES':'es','fr-FR':'fr','de-DE':'de','zh-CN':'zh','ja-JP':'ja','ru-RU':'ru' };
   return map[appLang] || 'en';
+}
+
+function toApiLang(appLang) {
+  const map = { 'en-US':'en','es-ES':'es','fr-FR':'fr','de-DE':'de','zh-CN':'zh','ja-JP':'ja','ru-RU':'ru' };
+  return map[appLang] || appLang; // pt-BR already matches ALLOWED_LANGS
 }
 
 function cleanWikiTitle(title) {
@@ -202,6 +207,11 @@ function App() {
     viewCenterRef.current = center;
   }, []);
 
+  useEffect(() => {
+    const center = viewCenterRef.current || mapCenter;
+    if (center) fetchNearby(center.lat, center.lng);
+  }, [lang]);
+
   // Only called by button tap — required by iOS Safari for geolocation permission
   const handleGoToUserLocation = () => {
     if (!navigator.geolocation) return;
@@ -247,7 +257,7 @@ function App() {
     setStoryError(false);
     try {
       const res = await axios.get(`${API_BASE}/history/story`, {
-        params: { name: pin.name, lat: pin.lat, lon: pin.lon, lang, aiGuide },
+        params: { name: pin.name, lat: pin.lat, lon: pin.lon, lang: toApiLang(lang), aiGuide },
         signal: controller.signal,
       });
       setStory({ text: res.data.story, photo: res.data.photoUrl, wikiUrl: res.data.wikiUrl });
