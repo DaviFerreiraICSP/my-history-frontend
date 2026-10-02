@@ -23,23 +23,52 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
   const dragControls = useDragControls();
 
   const [imgStatus, setImgStatus] = useState('idle');
+  const [isExpanded, setIsExpanded] = useState(false);
+
   useEffect(() => {
     setImgStatus(photoUrl ? 'loading' : 'idle');
   }, [photoUrl]);
 
+  useEffect(() => {
+    setIsExpanded(false);
+  }, [selectedPlace?.id]);
+
+  const cleanStoryText = (raw) => {
+    if (!raw) return '';
+    const patterns = [
+      /\(?\s*,?\s*(?:situad[ao]|localizad[ao]|posicionad[ao]|local)?\s*(?:nas|pelas|sob as)?\s*coordenadas(?:\s+geográficas)?(?:\s+de)?\s*[-+]?\d+\.\d+[\s,;e/]+[-+]?\d+\.\d+\s*\)?\s*,?/gi,
+      /\(?\s*coordenadas:\s*[-+]?\d+\.\d+[\s,;e/]+[-+]?\d+\.\d+\s*\)?\s*,?/gi,
+      /\(?\s*(?:lat|latitude)[:\s]*[-+]?\d+\.\d+[\s,;e/]+(?:lon|long|longitude)[:\s]*[-+]?\d+\.\d+\s*\)?\s*,?/gi,
+      /\(?\s*[-+]?\d{1,3}\.\d{3,}[\s,;e/]+[-+]?\d{1,3}\.\d{3,}\s*\)?\s*,?/gi,
+    ];
+    let res = raw;
+    for (const p of patterns) {
+      res = res.replace(p, '');
+    }
+    return res
+      .replace(/\s{2,}/g, ' ')
+      .replace(/([A-Za-zÀ-ÿ0-9])\s*,\s*,/g, '$1,')
+      .replace(/^\s*,\s*/gm, '')
+      .trim();
+  };
+
   const formatText = (text) => {
     if (!text) return [];
-    return text.split(/\n\n+/).filter(p => p.trim()).map(para => {
+    const cleaned = cleanStoryText(text);
+    return cleaned.split(/\n\n+/).filter(p => p.trim()).map(para => {
       const parts = para.split(/(\*\*.*?\*\*)/g);
       return parts.map((part, i) =>
         part.startsWith('**') && part.endsWith('**')
-          ? <strong key={i} style={{ color: '#111827', fontWeight: 700 }}>{part.slice(2, -2)}</strong>
+          ? <strong key={i} style={{ color: 'inherit', fontWeight: 700 }}>{part.slice(2, -2)}</strong>
           : part
       );
     });
   };
 
   const paragraphs = formatText(storyText);
+  const MAX_PARAS = 2;
+  const hasMore = paragraphs.length > MAX_PARAS;
+  const visibleParagraphs = isExpanded ? paragraphs : paragraphs.slice(0, MAX_PARAS);
   const typeLabel = t.typeLabels[selectedPlace?.type] || t.typeLabels.historical_landmark;
 
   return (
@@ -192,12 +221,23 @@ export default function StoryPanel({ selectedPlace, story, onClose, loading, err
                 animate="visible"
                 style={{ display: 'contents' }}
               >
-                {paragraphs.length > 0 ? paragraphs.map((para, idx) => (
+                {visibleParagraphs.length > 0 ? visibleParagraphs.map((para, idx) => (
                   <motion.p key={idx} className="story-paragraph" variants={reveal}>
                     {para}
                   </motion.p>
                 )) : (
                   <motion.p className="story-empty" variants={reveal}>{t.noStory}</motion.p>
+                )}
+
+                {hasMore && (
+                  <motion.button
+                    variants={reveal}
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="story-expand-btn"
+                    aria-expanded={isExpanded}
+                  >
+                    {isExpanded ? (t.showLess || 'Mostrar menos') : (t.readMore || 'Ler mais')}
+                  </motion.button>
                 )}
 
                 {selectedPlace?.lat && selectedPlace?.lon && (

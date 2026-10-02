@@ -1039,10 +1039,32 @@ button {
 
 .story-paragraph {
   font-family: var(--font-narrative);
-  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  font-size: clamp(1.05rem, 2.2vw, 1.22rem);
   color: #374151;
-  line-height: 1.8;
+  line-height: 1.75;
   margin: 0;
+  letter-spacing: -0.005em;
+}
+
+.story-expand-btn {
+  align-self: flex-start;
+  background: transparent;
+  border: none;
+  color: #7C3AED;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.story-expand-btn:hover {
+  color: #6D28D9;
+  transform: translateX(2px);
 }
 
 .story-empty {
@@ -1876,7 +1898,9 @@ button {
 .dark .story-panel-wonder .story-title {
   -webkit-text-fill-color: transparent;
 }
-.dark .story-paragraph { color: #cbd5e1; }
+.dark .story-paragraph { color: #e2e8f0; }
+.dark .story-expand-btn { color: #a78bfa; }
+.dark .story-expand-btn:hover { color: #c4b5fd; }
 .dark .story-empty { color: #475569; }
 .dark .story-directions-label { color: #475569; }
 .dark .story-skeleton { background: #1e1e2e; }

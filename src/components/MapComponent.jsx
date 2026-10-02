@@ -219,8 +219,16 @@ const createClusterCustomIcon = function (cluster) {
   });
 };
 
+const CARTO_KEY = import.meta.env.VITE_CARTO_API_KEY || '';
+
 function MapComponent({ pins, onPinClick, userPosition, externalCenter, onOpenStory, onMapMove, selectedPlace, lang = 'pt-BR', scanCenter, darkMode = false, theme = 'light', loadingNearby = false }) {
   const t = useT(lang);
+  const isDark = darkMode || theme === 'midnight';
+  const cartoStyle = isDark ? 'dark_all' : 'voyager';
+  const tileUrl = CARTO_KEY
+    ? `https://{s}.basemaps.cartocdn.com/rastertiles/${cartoStyle}/{z}/{x}/{y}.png?key=${CARTO_KEY}`
+    : `https://{s}.basemaps.cartocdn.com/rastertiles/${cartoStyle}/{z}/{x}/{y}.png`;
+
   return (
     <div className="absolute inset-0 z-0">
       <MapContainer
@@ -230,14 +238,11 @@ function MapComponent({ pins, onPinClick, userPosition, externalCenter, onOpenSt
         className="w-full h-full"
       >
         <TileLayer
-          key={theme}
-          url={
-            theme === 'midnight' ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-            : theme === 'dark'   ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-            :                      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-          }
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          maxZoom={19}
+          key={`${theme}-${cartoStyle}`}
+          url={tileUrl}
+          subdomains={['a', 'b', 'c', 'd']}
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          maxZoom={20}
         />
 
         <MapSizeWatcher />
